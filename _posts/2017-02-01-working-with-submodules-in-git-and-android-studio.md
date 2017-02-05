@@ -7,7 +7,7 @@ tags: development
 subclass: 'post tag-fiction'
 categories: 'casper'
 navigation: True
-logo: 'assets/images/ghost.png'
+logo: 'assets/images/home.png'
 ---
 
 I encountered working with submodules in Android Studio a while back while I was integrating GIS features with our [PDM](https://github.com/sunny5125/pdm) app. Apparently it looked like a simple task, and truth be told it was, I did face a few hiccups getting there. The following will be a documentation of the procedure I followed while I integrated [NextGis Android App](https://github.com/nextgis/android_gisapp) with our very own college project. 
