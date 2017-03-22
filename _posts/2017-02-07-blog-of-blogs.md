@@ -19,3 +19,5 @@ Here I plan to keep links of exciting blog posts which I encounter. I will go on
 3. [Add color to text in python](http://ozzmaker.com/add-colour-to-text-in-python/)
 
 4. [Merging vs Rebasing in git](https://www.atlassian.com/git/tutorials/merging-vs-rebasing)
+
+5. [Install Apache Tomcat 7 on Ubuntu 14.04 via apt-get](https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-7-on-ubuntu-14-04-via-apt-get)
