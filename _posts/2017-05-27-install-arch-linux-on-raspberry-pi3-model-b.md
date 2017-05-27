@@ -14,7 +14,7 @@ Today I installed [Arch Linux](https://www.archlinux.org/) on my [Raspberry Pi](
 
 The general procedure is to take up a Micro SD card and write the preferred OS in it. Put the card in your pi, apply power, connect ethernet and you are good to go! 
 
-#####Step 1
+##### Step 1
 The first step is to partition the SD card. We will create two partions in our SD card. After inserting the SD card in your computer find out its name in your computer. If your card is named as /dev/sd**X** you can easily follow the arch guide. In my Ubuntu 14.04 system (yeah I know thats old!) it was identified as /dev/mmcblk0p1. This was the minor hiccup I referred above. What it means is that the mmc sub-system of my computer has registered the device in its well known format `mmcblkXpY`. 
 
 - Each mmc device registered withing the Linux kernel receives it own mmc device number **X**.
@@ -55,38 +55,38 @@ After this if you do `lsblk` you should have something like:
 		├─mmcblk0p1 179:1    0   100M  0 part 
 		└─mmcblk0p2 179:2    0  14.8G  0 part
 
-#####Step 2
+##### Step 2
 Now we have create and mount FAT filesystem in partion 1:
 
 		mkfs.vfat /dev/mmcblk0p1
 		mkdir boot
 		mount /dev/mmcblk0p1 boot
 
-#####Step 3
+##### Step 3
 Similarly create and mount ext4filesystem in partition 2:
 
 		mkfs.ext4 /dev/mmcblk0p2
 		mkdir root
 		mount /dev/mmcblk0p2 root
 
-#####Step 4
+##### Step 4
 Download and extract the root filesystem (as root, not via sudo):
 
 		wget http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz
 		bsdtar -xpf ArchLinuxARM-rpi-2-latest.tar.gz -C root
 		sync
 
-#####Step 5
+##### Step 5
 Move boot files to the first partition:
 
 		mv root/boot/* boot
 
-#####Step 6
+##### Step 6
 Unmount the two partitions:
 
 		umount boot root
 
-#####Step 7
+##### Step 7
 Insert SD card in Raspberry Pi 3 , connect ethernet and apply power. We can connect to a monitor via HDMI cable and add a USB mouse and keyboard to get started. Better still use SSH to have remote access. Find out the IP of your Pi (via nmap, etc.) and then :
 
 		ssh alarm@192.168.0.101
