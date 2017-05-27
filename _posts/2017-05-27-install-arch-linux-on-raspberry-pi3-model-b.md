@@ -2,7 +2,7 @@
 layout: post
 cover: 'assets/images/cover9.jpg'
 title: Installing Arch Linux on Raspberry Pi 3 Model B
-date:   2017-05-27 00:00:00
+date:   2017-05-26 00:00:00
 tags: DevOps
 subclass: 'post tag-fiction'
 categories: 'casper'
