@@ -1,6 +1,6 @@
 ---
 layout: post
-cover: 'assets/images/cover9.jpg'
+cover: 'assets/images/cover-pi.jpg'
 title: Installing Arch Linux on Raspberry Pi 3 Model B
 date:   2017-05-26 00:00:00
 tags: DevOps
