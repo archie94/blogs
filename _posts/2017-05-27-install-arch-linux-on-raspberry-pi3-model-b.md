@@ -106,3 +106,5 @@ Insert SD card in Raspberry Pi 3 , connect ethernet and apply power. We can conn
 
 *****
 The procedure was simple, credits goes mostly to the well written arch guide. After meddling with the Pi soon you will find sudo is not installed! Hopefully I will get to document that in the future!
+
+**Edit**: It is [here](https://www.reddit.com/r/raspberry_pi/comments/4skwiq/arch_linux_arm_tutorial_part_2_installing_sudo/?st=j3ag3dpv&sh=537cfee1)
