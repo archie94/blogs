@@ -5,8 +5,13 @@
     </a>
     <ul>
         <li class="nav-home {% if page.current == 'home' %} nav-current{% endif %}" role="presentation"><a href="{{ site.baseurl }}">Home</a></li>
+        
         <li class="nav-about {% if page.current == 'about' %} nav-current{% endif %}" role="presentation"><a href="{{ site.baseurl }}about">About</a></li>
+
         <li class="nav-development {% if page.url contains 'development' %} nav-current{% endif %}" role="presentation"><a href="{{ site.baseurl }}tag/development">Development</a></li>
+        
+        <li class="nav-devops {% if page.url contains 'devops' %} nav-current{% endif %}" role="presentation"><a href="{{ site.baseurl }}tag/DevOps">DevOps</a></li>
+        
         <li class="nav-author {% if page.current == 'author' %} nav-current{% endif %}" role="presentation"><a href="{{ site.baseurl }}author/casper">Author</a></li>
     </ul>
     <a class="subscribe-button icon-feed" href="{{ site.baseurl }}feed.xml">Subscribe</a>
