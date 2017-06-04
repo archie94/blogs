@@ -58,7 +58,7 @@ safe: false
 lsi: false
 username: archie94
 repo: blogs
-branch: gh-pages
+branch: master
 relative_source: ../blogs/
 destination: ../blogs-pages/
 production_url:  https://archie94.github.io/blogs/
