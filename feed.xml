@@ -1,28 +1,55 @@
----
-layout: null
----
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site.name | xml_escape }} - Articles</title>
-    <description>{% if site.description %}{{ site.description | xml_escape }}{% endif %}</description>
+    <title>Out of Oblivion - Articles</title>
+    <description>Random thoughts and findings of a novice coder.</description>
     <link>
-    {{ site.url }}</link>
-    {% for post in site.posts %}
-      {% unless post.link %}
+    http://archie94.github.io/blogs/</link>
+    
+      
       <item>
-        <title>{{ post.title | xml_escape }}</title>
-        {% if post.excerpt %}
-          <description>{{ post.excerpt | xml_escape }}</description>
-        {% else %}
-          <description>{{ post.content | xml_escape }}</description>
-        {% endif %}
-        <pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
+        <title>Installing Arch Linux on Raspberry Pi 3 Model B</title>
+        
+          <description>&lt;p&gt;Today I installed &lt;a href=&quot;https://www.archlinux.org/&quot;&gt;Arch Linux&lt;/a&gt; on my &lt;a href=&quot;https://www.raspberrypi.org/products/raspberry-pi-3-model-b/&quot;&gt;Raspberry Pi&lt;/a&gt;. The &lt;a href=&quot;https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3&quot;&gt;Arch Linux guide&lt;/a&gt; is sufficiant and I followed it mostly overcoming few small hiccups which I plan on documenting here.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Fri, 26 May 2017 00:00:00 +0000</pubDate>
         <link>
-        {{ site.url }}{{ post.url }}</link>
-        <guid isPermaLink="true">{{ site.url }}{{ post.url }}</guid>
+        http://archie94.github.io/blogs//install-arch-linux-on-raspberry-pi3-model-b</link>
+        <guid isPermaLink="true">http://archie94.github.io/blogs//install-arch-linux-on-raspberry-pi3-model-b</guid>
       </item>
-      {% endunless %}
-    {% endfor %}
+      
+    
+      
+      <item>
+        <title>Blog of Blogs</title>
+        
+          <description>&lt;p&gt;Here I plan to keep links of exciting blog posts which I encounter. I will go on updating the list regularly.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Tue, 07 Feb 2017 00:00:00 +0000</pubDate>
+        <link>
+        http://archie94.github.io/blogs//blog-of-blogs</link>
+        <guid isPermaLink="true">http://archie94.github.io/blogs//blog-of-blogs</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Working with submodules in Android Studio and git</title>
+        
+          <description>&lt;p&gt;I encountered working with submodules in Android Studio a while back while I was integrating GIS features with our &lt;a href=&quot;https://github.com/sunny5125/pdm&quot;&gt;PDM&lt;/a&gt; app. Apparently it looked like a simple task, and truth be told it was, I did face a few hiccups getting there. The following will be a documentation of the procedure I followed while I integrated &lt;a href=&quot;https://github.com/nextgis/android_gisapp&quot;&gt;NextGis Android App&lt;/a&gt; with our very own college project.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Wed, 01 Feb 2017 10:18:00 +0000</pubDate>
+        <link>
+        http://archie94.github.io/blogs//working-with-submodules-in-git-and-android-studio</link>
+        <guid isPermaLink="true">http://archie94.github.io/blogs//working-with-submodules-in-git-and-android-studio</guid>
+      </item>
+      
+    
   </channel>
 </rss>

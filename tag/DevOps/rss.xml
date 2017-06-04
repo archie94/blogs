@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+   
+      <title>archie94.github.io/blogs/</title>
+   
+   <link>http://archie94.github.io/blogs/</link>
+   <description>Random thoughts and findings of a novice coder.</description>
+   <language>en-uk</language>
+   <managingEditor> Arka Prava Basu</managingEditor>
+   <atom:link href="rss" rel="self" type="application/rss+xml" />
+   
+	<item>
+	  <title>Installing Arch Linux on Raspberry Pi 3 Model B</title>
+	  <link>/blogs//install-arch-linux-on-raspberry-pi3-model-b</link>
+	  <author>Arka Prava Basu</author>
+	  <pubDate>2017-05-26T00:00:00+00:00</pubDate>
+	  <guid>/blogs//install-arch-linux-on-raspberry-pi3-model-b</guid>
+	  <description><![CDATA[
+	     <p>Today I installed <a href="https://www.archlinux.org/">Arch Linux</a> on my <a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/">Raspberry Pi</a>. The <a href="https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3">Arch Linux guide</a> is sufficiant and I followed it mostly overcoming few small hiccups which I plan on documenting here.</p>
+
+<p>The general procedure is to take up a Micro SD card and write the preferred OS in it. Put the card in your pi, apply power, connect ethernet and you are good to go!</p>
+
+<h5 id="step-1">Step 1</h5>
+<p>The first step is to partition the SD card. We will create two partions in our SD card. After inserting the SD card in your computer find out its name in your computer. If your card is named as /dev/sd<strong>X</strong> you can easily follow the arch guide. In my Ubuntu 14.04 system (yeah I know thats old!) it was identified as /dev/mmcblk0p1. This was the minor hiccup I referred above. What it means is that the mmc sub-system of my computer has registered the device in its well known format <code class="highlighter-rouge">mmcblkXpY</code>.</p>
+
+<ul>
+  <li>Each mmc device registered withing the Linux kernel receives it own mmc device number <strong>X</strong>.</li>
+  <li>Each partition on a particular device receives it own number <strong>Y</strong>.More about this <a href="https://stackoverflow.com/a/21752229/5285588">here</a></li>
+</ul>
+
+<p>So just to make things clear when I do <code class="highlighter-rouge">df</code> I have</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	Filesystem     1K-blocks      Used Available Use% Mounted on
+	/dev/mmcblk0p1  15541408         8  15541400   1% /media/arka/5E95-21CD
+</code></pre>
+</div>
+
+<p>And on <code class="highlighter-rouge">lsblk</code> I get</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+	mmcblk0     179:0    0  14.9G  0 disk 
+	└─mmcblk0p1 179:1    0  14.9G  0 part /media/arka/5E95-21CD
+</code></pre>
+</div>
+
+<p>First umount the device</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	umount /dev/mmcblk0p1
+</code></pre>
+</div>
+
+<p>Now we have to create partition in this SD card. Start fdisk to partion:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	fdisk /dev/mmcblk0
+</code></pre>
+</div>
+
+<p>Delete old partions and create new one at fdisk prompt:</p>
+
+<ul>
+  <li>Type <strong>o</strong>. This will clear out any partitions on the drive.</li>
+  <li>Type <strong>p</strong> to list partitions. There should be no partitions left.</li>
+  <li>Type <strong>n</strong>, then <strong>p</strong> for primary, <strong>1</strong> for the first partition on the drive, press <em>ENTER</em> to accept the default first sector, then type <strong>+100M</strong> for the last sector.</li>
+  <li>Type <strong>t</strong>, then <strong>c</strong> to set the first partition to type W95 FAT32 (LBA).</li>
+  <li>Type <strong>n</strong>, then <strong>p</strong> for primary, <strong>2</strong> for the second partition on the drive, and then press <em>ENTER</em> twice to accept the default first and last sector.</li>
+  <li>Write the partition table and exit by typing <strong>w</strong>.</li>
+</ul>
+
+<p>After this if you do <code class="highlighter-rouge">lsblk</code> you should have something like:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+	mmcblk0     179:0    0  14.9G  0 disk 
+	├─mmcblk0p1 179:1    0   100M  0 part 
+	└─mmcblk0p2 179:2    0  14.8G  0 part
+</code></pre>
+</div>
+
+<h5 id="step-2">Step 2</h5>
+<p>Now we have create and mount FAT filesystem in partion 1:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	mkfs.vfat /dev/mmcblk0p1
+	mkdir boot
+	mount /dev/mmcblk0p1 boot
+</code></pre>
+</div>
+
+<h5 id="step-3">Step 3</h5>
+<p>Similarly create and mount ext4filesystem in partition 2:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	mkfs.ext4 /dev/mmcblk0p2
+	mkdir root
+	mount /dev/mmcblk0p2 root
+</code></pre>
+</div>
+
+<h5 id="step-4">Step 4</h5>
+<p>Download and extract the root filesystem (as root, not via sudo):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	wget http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz
+	bsdtar -xpf ArchLinuxARM-rpi-2-latest.tar.gz -C root
+	sync
+</code></pre>
+</div>
+
+<h5 id="step-5">Step 5</h5>
+<p>Move boot files to the first partition:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	mv root/boot/* boot
+</code></pre>
+</div>
+
+<h5 id="step-6">Step 6</h5>
+<p>Unmount the two partitions:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	umount boot root
+</code></pre>
+</div>
+
+<h5 id="step-7">Step 7</h5>
+<p>Insert SD card in Raspberry Pi 3 , connect ethernet and apply power. We can connect to a monitor via HDMI cable and add a USB mouse and keyboard to get started. Better still use SSH to have remote access. Find out the IP of your Pi (via nmap, etc.) and then :</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	ssh alarm@192.168.0.101
+	alarm@192.168.0.101's password: 
+	Welcome to Arch Linux ARM
+
+ 	Website: http://archlinuxarm.org
+   	    Forum: http://archlinuxarm.org/forum
+              IRC: #archlinux-arm on irc.Freenode.net
+	Last login: Sat May 27 13:37:59 2017 from 192.168.0.106
+	[alarm@alarmpi ~]$ pwd
+	/home/alarm
+	[alarm@alarmpi ~]$ 
+</code></pre>
+</div>
+
+<ul>
+  <li>Login as the default user <em>alarm</em> with the password <em>alarm</em>.</li>
+  <li>The default root password is <em>root</em>.</li>
+</ul>
+
+<hr />
+<p>The procedure was simple, credits goes mostly to the well written arch guide. After meddling with the Pi soon you will find sudo is not installed! Hopefully I will get to document that in the future!</p>
+
+<p><strong>Edit</strong>: It is <a href="https://www.reddit.com/r/raspberry_pi/comments/4skwiq/arch_linux_arm_tutorial_part_2_installing_sudo/?st=j3ag3dpv&amp;sh=537cfee1">here</a></p>
+
+	  ]]></description>
+	</item>
+
+
+</channel>
+</rss>

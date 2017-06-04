@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- [[! Page Meta ]] -->
-    <title>Out Of Oblivion</title>
+    <title>Author</title>
     <meta name="description" content="Out of Oblivion - Random thoughts and findings of a novice coder." />
 
     <meta name="HandheldFriendly" content="True" />
@@ -60,7 +60,7 @@
 
 
 </head>
-<body class="home-template nav-closed">
+<body class="author-template nav-closed">
 
     <div class="nav">
     <h3 class="nav-title">Menu</h3>
@@ -68,10 +68,10 @@
         <span class="hidden">Close</span>
     </a>
     <ul>
-        <li class="nav-home  nav-current" role="presentation"><a href="/blogs/">Home</a></li>
+        <li class="nav-home " role="presentation"><a href="/blogs/">Home</a></li>
         <li class="nav-about " role="presentation"><a href="/blogs/about">About</a></li>
         <li class="nav-development " role="presentation"><a href="/blogs/tag/development">Development</a></li>
-        <li class="nav-author " role="presentation"><a href="/blogs/author/casper">Author</a></li>
+        <li class="nav-author  nav-current" role="presentation"><a href="/blogs/author/casper">Author</a></li>
     </ul>
     <a class="subscribe-button icon-feed" href="/blogs/feed.xml">Subscribe</a>
 </div>
@@ -81,31 +81,45 @@
     <div class="site-wrapper">
 
         <!-- [[! Everything else gets inserted here ]] -->
-        <!-- < default -->
+        <!-- < default}} -->
 <!-- The tag above means - insert everything in this file into the [body] of the default.hbs template -->
 
-<!-- The big featured header  -->
-<header class="main-header "
-        style="background-image: url(/blogs/assets/images/cover1.jpg) ">
-    <nav class="main-nav overlay clearfix">
-        <a class="blog-logo" href="/blogs/"><img src="/blogs/assets/images/home.png" alt="Blog Logo" /></a>
+<!-- The big featured header -->
+
+<!-- Everything inside the #author tags pulls data from the author -->
+<!-- #author  -->
+    <header class="main-header author-head " style="background-image: url(/blogs/assets/images/cover4.jpg) ">
+        <nav class="main-nav overlay clearfix">
+            <a class="blog-logo" href="/blogs/"><img src="/blogs/assets/images/home.png" alt="Blog Logo" /></a>
+            
+                <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
+            
+        </nav>
+    </header>
+
+    <section class="author-profile inner">
         
-            <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
+        <figure class="author-image">
+            <div class="img" style="background-image: url(/blogs/assets/images/arka.jpg)"><span class="hidden">Arka Prava Basu's Picture</span></div>
+        </figure>
         
-    </nav>
-    <div class="vertical">
-        <div class="main-header-content inner">
-            <h1 class="page-title">Out of Oblivion</h1>
-            <h2 class="page-description">Random thoughts and findings of a novice coder.</h2>
+        <h1 class="author-title">Arka Prava Basu</h1>
+        
+            <h2 class="author-bio">CS Undergraduate from NIT Durgapur. Android Developer and technophile.</h2>
+        
+        <div class="author-meta">
+            <span class="author-location icon-location">West Bengal, India</span>
+            <span class="author-link icon-link"><a href="http://archie94.github.io/blogs/">archie94.github.io/blogs/</a></span>
+            <!-- <span class="author-stats"><i class="icon-stats"></i> [[plural ../pagination.total empty='No posts' singular='% post' plural='% posts']]</span> -->
+            <span class="author-stats"><i class="icon-stats"></i>3 posts</span>
         </div>
-    </div>
-    <a class="scroll-down icon-arrow-left" href="#content" data-offset="-45"><span class="hidden">Scroll Down</span></a>
-</header>
+    </section>
+<!-- /author -->
 
 <!-- The main content area on the homepage -->
 <main id="content" class="content" role="main">
 
-    <!-- The tag below includes the post loop - partials/loop.hbs -->
+    <!-- The tag below includes the post loop - partials/loop.hbs  -->
         <!-- Previous/next page links - only displayed on page 2+ -->
     <div class="extra-pagination inner">
         

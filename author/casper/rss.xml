@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+   
+      <title>archie94.github.io/blogs/</title>
+   
+   <link>http://archie94.github.io/blogs/</link>
+   <description>Random thoughts and findings of a novice coder.</description>
+   <language>en-uk</language>
+   <managingEditor> Arka Prava Basu</managingEditor>
+   <atom:link href="rss" rel="self" type="application/rss+xml" />
+   
+	<item>
+	  <title>Installing Arch Linux on Raspberry Pi 3 Model B</title>
+	  <link>/blogs//install-arch-linux-on-raspberry-pi3-model-b</link>
+	  <author>Arka Prava Basu</author>
+	  <pubDate>2017-05-26T00:00:00+00:00</pubDate>
+	  <guid>/blogs//install-arch-linux-on-raspberry-pi3-model-b</guid>
+	  <description><![CDATA[
+	     <p>Today I installed <a href="https://www.archlinux.org/">Arch Linux</a> on my <a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/">Raspberry Pi</a>. The <a href="https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3">Arch Linux guide</a> is sufficiant and I followed it mostly overcoming few small hiccups which I plan on documenting here.</p>
+
+<p>The general procedure is to take up a Micro SD card and write the preferred OS in it. Put the card in your pi, apply power, connect ethernet and you are good to go!</p>
+
+<h5 id="step-1">Step 1</h5>
+<p>The first step is to partition the SD card. We will create two partions in our SD card. After inserting the SD card in your computer find out its name in your computer. If your card is named as /dev/sd<strong>X</strong> you can easily follow the arch guide. In my Ubuntu 14.04 system (yeah I know thats old!) it was identified as /dev/mmcblk0p1. This was the minor hiccup I referred above. What it means is that the mmc sub-system of my computer has registered the device in its well known format <code class="highlighter-rouge">mmcblkXpY</code>.</p>
+
+<ul>
+  <li>Each mmc device registered withing the Linux kernel receives it own mmc device number <strong>X</strong>.</li>
+  <li>Each partition on a particular device receives it own number <strong>Y</strong>.More about this <a href="https://stackoverflow.com/a/21752229/5285588">here</a></li>
+</ul>
+
+<p>So just to make things clear when I do <code class="highlighter-rouge">df</code> I have</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	Filesystem     1K-blocks      Used Available Use% Mounted on
+	/dev/mmcblk0p1  15541408         8  15541400   1% /media/arka/5E95-21CD
+</code></pre>
+</div>
+
+<p>And on <code class="highlighter-rouge">lsblk</code> I get</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+	mmcblk0     179:0    0  14.9G  0 disk 
+	└─mmcblk0p1 179:1    0  14.9G  0 part /media/arka/5E95-21CD
+</code></pre>
+</div>
+
+<p>First umount the device</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	umount /dev/mmcblk0p1
+</code></pre>
+</div>
+
+<p>Now we have to create partition in this SD card. Start fdisk to partion:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	fdisk /dev/mmcblk0
+</code></pre>
+</div>
+
+<p>Delete old partions and create new one at fdisk prompt:</p>
+
+<ul>
+  <li>Type <strong>o</strong>. This will clear out any partitions on the drive.</li>
+  <li>Type <strong>p</strong> to list partitions. There should be no partitions left.</li>
+  <li>Type <strong>n</strong>, then <strong>p</strong> for primary, <strong>1</strong> for the first partition on the drive, press <em>ENTER</em> to accept the default first sector, then type <strong>+100M</strong> for the last sector.</li>
+  <li>Type <strong>t</strong>, then <strong>c</strong> to set the first partition to type W95 FAT32 (LBA).</li>
+  <li>Type <strong>n</strong>, then <strong>p</strong> for primary, <strong>2</strong> for the second partition on the drive, and then press <em>ENTER</em> twice to accept the default first and last sector.</li>
+  <li>Write the partition table and exit by typing <strong>w</strong>.</li>
+</ul>
+
+<p>After this if you do <code class="highlighter-rouge">lsblk</code> you should have something like:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+	mmcblk0     179:0    0  14.9G  0 disk 
+	├─mmcblk0p1 179:1    0   100M  0 part 
+	└─mmcblk0p2 179:2    0  14.8G  0 part
+</code></pre>
+</div>
+
+<h5 id="step-2">Step 2</h5>
+<p>Now we have create and mount FAT filesystem in partion 1:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	mkfs.vfat /dev/mmcblk0p1
+	mkdir boot
+	mount /dev/mmcblk0p1 boot
+</code></pre>
+</div>
+
+<h5 id="step-3">Step 3</h5>
+<p>Similarly create and mount ext4filesystem in partition 2:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	mkfs.ext4 /dev/mmcblk0p2
+	mkdir root
+	mount /dev/mmcblk0p2 root
+</code></pre>
+</div>
+
+<h5 id="step-4">Step 4</h5>
+<p>Download and extract the root filesystem (as root, not via sudo):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	wget http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz
+	bsdtar -xpf ArchLinuxARM-rpi-2-latest.tar.gz -C root
+	sync
+</code></pre>
+</div>
+
+<h5 id="step-5">Step 5</h5>
+<p>Move boot files to the first partition:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	mv root/boot/* boot
+</code></pre>
+</div>
+
+<h5 id="step-6">Step 6</h5>
+<p>Unmount the two partitions:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	umount boot root
+</code></pre>
+</div>
+
+<h5 id="step-7">Step 7</h5>
+<p>Insert SD card in Raspberry Pi 3 , connect ethernet and apply power. We can connect to a monitor via HDMI cable and add a USB mouse and keyboard to get started. Better still use SSH to have remote access. Find out the IP of your Pi (via nmap, etc.) and then :</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	ssh alarm@192.168.0.101
+	alarm@192.168.0.101's password: 
+	Welcome to Arch Linux ARM
+
+ 	Website: http://archlinuxarm.org
+   	    Forum: http://archlinuxarm.org/forum
+              IRC: #archlinux-arm on irc.Freenode.net
+	Last login: Sat May 27 13:37:59 2017 from 192.168.0.106
+	[alarm@alarmpi ~]$ pwd
+	/home/alarm
+	[alarm@alarmpi ~]$ 
+</code></pre>
+</div>
+
+<ul>
+  <li>Login as the default user <em>alarm</em> with the password <em>alarm</em>.</li>
+  <li>The default root password is <em>root</em>.</li>
+</ul>
+
+<hr />
+<p>The procedure was simple, credits goes mostly to the well written arch guide. After meddling with the Pi soon you will find sudo is not installed! Hopefully I will get to document that in the future!</p>
+
+<p><strong>Edit</strong>: It is <a href="https://www.reddit.com/r/raspberry_pi/comments/4skwiq/arch_linux_arm_tutorial_part_2_installing_sudo/?st=j3ag3dpv&amp;sh=537cfee1">here</a></p>
+
+	  ]]></description>
+	</item>
+
+	<item>
+	  <title>Blog of Blogs</title>
+	  <link>/blogs//blog-of-blogs</link>
+	  <author>Arka Prava Basu</author>
+	  <pubDate>2017-02-07T00:00:00+00:00</pubDate>
+	  <guid>/blogs//blog-of-blogs</guid>
+	  <description><![CDATA[
+	     <p>Here I plan to keep links of exciting blog posts which I encounter. I will go on updating the list regularly.</p>
+
+<ol>
+  <li>
+    <p>A small and comprehensive <a href="https://johnleach.co.uk/words/323/git-submodules-in-n-easy-steps">blog</a> about getting acquainted with submodules in git.</p>
+  </li>
+  <li>
+    <p>Often an android device does not show up in ubuntu even though ADB has been enabled on the phone. The trick is to add your device to <code class="highlighter-rouge">udev</code> rules. Here is a good <a href="http://bernaerts.dyndns.org/android/339-android-oneplustwo-oneplusx-enable-adb-mtp-detection-ubuntu-trusty">tutorial</a> to do that. Alternatively go through the <a href="https://developer.android.com/studio/run/device.html">developer</a> page.</p>
+  </li>
+  <li>
+    <p><a href="http://ozzmaker.com/add-colour-to-text-in-python/">Add color to text in python</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.atlassian.com/git/tutorials/merging-vs-rebasing">Merging vs Rebasing in git</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-7-on-ubuntu-14-04-via-apt-get">Install Apache Tomcat 7 on Ubuntu 14.04 via apt-get</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.reddit.com/r/raspberry_pi/comments/4skwiq/arch_linux_arm_tutorial_part_2_installing_sudo/?st=j3ag3dpv&amp;sh=537cfee1">Installing Sudo in Arch Linux ARM</a></p>
+  </li>
+</ol>
+
+	  ]]></description>
+	</item>
+
+	<item>
+	  <title>Working with submodules in Android Studio and git</title>
+	  <link>/blogs//working-with-submodules-in-git-and-android-studio</link>
+	  <author>Arka Prava Basu</author>
+	  <pubDate>2017-02-01T10:18:00+00:00</pubDate>
+	  <guid>/blogs//working-with-submodules-in-git-and-android-studio</guid>
+	  <description><![CDATA[
+	     <p>I encountered working with submodules in Android Studio a while back while I was integrating GIS features with our <a href="https://github.com/sunny5125/pdm">PDM</a> app. Apparently it looked like a simple task, and truth be told it was, I did face a few hiccups getting there. The following will be a documentation of the procedure I followed while I integrated <a href="https://github.com/nextgis/android_gisapp">NextGis Android App</a> with our very own college project.</p>
+
+<h3 id="the-basics">The Basics</h3>
+
+<p>Android Studio provides the option to add sub modules to our existing project. What it means you can import another project (your own or maybe some other repository) and integrate it with your project with ease. As in my case I had to integrate <a href="https://github.com/nextgis/android_gisapp">this</a> repository. Looking closely you will observe that the NextGis android app repository has 2 submodules : <a href="https://github.com/nextgis/android_maplib">maplib</a> and <a href="https://github.com/nextgis/android_maplibui">maplibui</a>.</p>
+
+<p>So I started out forking android_gisapp repository. In order to initialise the submodules within android_gisapp I had to do :</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    git submodule init
+    git submodule update
+</code></pre>
+</div>
+
+<p>and voila, git clones the required submodules into android_gisapp and we are good to go. However for our research work we needed to change some core features of android_gisapp and soon realised it will be better to keep my own forks of maplib and maplibui.</p>
+
+<p>At this point it is better to get acquainted with submodules in git, the best blog which I could find is <a href="https://johnleach.co.uk/words/323/git-submodules-in-n-easy-steps">here</a>. Changing the submodules in my fork of android_gisapp to point to my forks of maplib and maplibui was simple, just change the path in <code class="highlighter-rouge">.gitmodules</code> and do <code class="highlighter-rouge">git submodule update</code>. Finally push the changes.</p>
+
+<h3 id="changing-a-project-to-build-as-a-library">Changing a project to build as a library</h3>
+
+<p>This was the part in which I was stuck the most. I realised we cannot use an <code class="highlighter-rouge">apk</code> as a dependency in android project and it supports only <code class="highlighter-rouge">jar</code> and <code class="highlighter-rouge">aar</code> dependencies as of now. The alternative was to compile the android_gisapp as a library and include the <code class="highlighter-rouge">aar</code> file in dependency. I decided to keep my fork of android_gisapp as a module in our PDM app. That way we can change the submodules as we are developing PDM. So the project modules in PDM will look like</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    app
+     |
+     |--android_gisapp
+ 	         |
+ 	         |--maplib
+ 	         |--maplibui
+</code></pre>
+</div>
+
+<p>Before adding android_gisapp as a submodule since an android project cannot have two modules with same name I had to change the main module name of android_gispp from <code class="highlighter-rouge">app</code> to <code class="highlighter-rouge">android_gisapp</code>. To do this we can use the refractor option in android studio or change in <code class="highlighter-rouge">settings.gradle</code></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    include ':app', ':maplib', ':maplibui'
+</code></pre>
+</div>
+
+<p>to</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    include ':gisapp', ':maplib', ':maplibui'
+</code></pre>
+</div>
+
+<p>After that I had to build android_gisapp as a library project. We cannot have two different apks for the same project and changes had to be made in this regard. To build project as a library head to <code class="highlighter-rouge">build.gradle</code> and change</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    apply plugin: 'com.android.application'
+</code></pre>
+</div>
+
+<p>to</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    apply plugin: 'com.android.library'
+</code></pre>
+</div>
+
+<p>We have to remove <code class="highlighter-rouge">applicationId</code> under <code class="highlighter-rouge">defaultConfig</code> and also the following section :</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    applicationVariants.all { variant -&gt;
+             variant.outputs.each { output -&gt;
+                 output.outputFile = new File(output.outputFile.parent, "ngmobile-" + defaultConfig.versionName + ".apk")
+             }
+         }
+</code></pre>
+</div>
+
+<p>Change category of the <code class="highlighter-rouge">LAUNCHER</code> activity to <code class="highlighter-rouge">DEFAULT</code> (in general it is likely that you will have a <code class="highlighter-rouge">LAUNCHER</code> activity in your main project)
+Then do a fresh build of the project and push the changes to remote.</p>
+
+<h3 id="adding-an-existing-repository-as-module-in-pdm">Adding an existing repository as module in PDM</h3>
+
+<p>The next bit was simple. I had to include my fork of android_gisapp as a submodule in PDM. In PDM directory I had to</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    git submodule add &lt;link to my fork of android_gisapp&gt;
+    git init
+    git submodule update
+    cd android_gisapp
+    git submodule init
+    git submodule update
+</code></pre>
+</div>
+
+<p>Then in Android Studio File-&gt;Project Structure-&gt;app-&gt;add a new module and give the path to android_gisapp. After that do a clean build.</p>
+
+<p>Hopefully this integration was proper and meaningful. Upto now it has been all good. It is super easy to maintain all 4 repositories. Two noteworthy points are</p>
+
+<ul>
+  <li>always explicitely checkout to a branch in a submodule in git. Failure to do this may lead to HEAD detached.</li>
+  <li>after commiting changes in submodules we must push them. Only after that we can add the changes and reflect them in parent module.</li>
+</ul>
+
+<p>Like all things in git, the learning curve is steep but there are immense possibilities to get out of it once we get the basic concepts. I will keep updating this thread if I have missed some part, for any major updates or changes I will make a separate blog. Till then adios!</p>
+
+<h3 id="credits">Credits</h3>
+
+<p>A very big shout out to <a href="http://nextgis.com/">NextGis</a> for keeping such a well documented repository to provide Opensource GIS application for android.</p>
+
+	  ]]></description>
+	</item>
+
+
+</channel>
+</rss>

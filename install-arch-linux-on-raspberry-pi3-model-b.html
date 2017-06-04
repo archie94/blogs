@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- [[! Document Settings ]] -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- [[! Page Meta ]] -->
+    <title>Installing Arch Linux on Raspberry Pi 3 Model B</title>
+    <meta name="description" content="Out of Oblivion - Random thoughts and findings of a novice coder." />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/blogs/assets/images/favicon.ico" >
+
+    <!-- [[! Styles'n'Scripts ]] -->
+    <link rel="stylesheet" type="text/css" href="/blogs/assets/css/screen.css" />
+    <link rel="stylesheet" type="text/css"
+          href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+    <link rel="stylesheet" type="text/css" href="/blogs/assets/css/syntax.css" />
+
+    <!-- [[! highlight.js ]] -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- [[! Ghost outputs important style and meta data with this tag ]] -->
+        <link rel="canonical" href="/blogs/" />
+    <meta name="referrer" content="origin" />
+    <link rel="next" href="/blogs/page2/" />
+
+    <meta property="og:site_name" content="Out of Oblivion" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Out of Oblivion" />
+    <meta property="og:description" content="Random thoughts and findings of a novice coder." />
+    <meta property="og:url" content="/blogs/" />
+    <meta property="og:image" content="/blogs/assets/images/cover1.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Out of Oblivion" />
+    <meta name="twitter:description" content="Random thoughts and findings of a novice coder." />
+    <meta name="twitter:url" content="/blogs/" />
+    <meta name="twitter:image:src" content="/blogs/assets/images/cover1.jpg" />
+
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Website",
+    "publisher": "Finding The Way Home",
+    "url": "/blogs/",
+    "image": "/blogs/assets/images/cover1.jpg",
+    "description": "Random thoughts and findings of a novice coder."
+}
+    </script>
+
+    <meta name="generator" content="Jekyll 3.0.0" />
+    <link rel="alternate" type="application/rss+xml" title="Out of Oblivion" href="/blogs/feed.xml" />
+
+
+</head>
+<body class="home-template nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        <li class="nav-home " role="presentation"><a href="/blogs/">Home</a></li>
+        <li class="nav-about " role="presentation"><a href="/blogs/about">About</a></li>
+        <li class="nav-development " role="presentation"><a href="/blogs/tag/development">Development</a></li>
+        <li class="nav-author " role="presentation"><a href="/blogs/author/casper">Author</a></li>
+    </ul>
+    <a class="subscribe-button icon-feed" href="/blogs/feed.xml">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        <!-- [[! Everything else gets inserted here ]] -->
+        <!-- < default -->
+
+<!-- The comment above "< default" means - insert everything in this file into -->
+    <!-- the [body] of the default.hbs template, which contains our header/footer. -->
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<header class="main-header post-head " style="background-image: url(/blogs/assets/images/cover-pi.jpg) ">
+    <nav class="main-nav  overlay  clearfix">
+        <a class="blog-logo" href="/blogs/"><img src="/blogs/assets/images/home.png" alt="Blog Logo" /></a>
+        
+            <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
+        
+    </nav>
+</header>
+
+<main class="content" role="main">
+
+    <article class="post tag-fiction">
+
+        <header class="post-header">
+            <h1 class="post-title">Installing Arch Linux on Raspberry Pi 3 Model B</h1>
+            <section class="post-meta">
+            <!-- <a href='/blogs/'>Arka Prava Basu</a> -->
+            <time class="post-date" datetime="2017-05-26">26 May 2017</time>
+                <!-- [[tags prefix=" on "]] -->
+                 
+                on 
+                
+                    
+                       <a href='/blogs/tag/DevOps'>Devops</a>
+                       
+                
+                
+            </section>
+        </header>
+
+        <section class="post-content">
+            
+            <p>Today I installed <a href="https://www.archlinux.org/">Arch Linux</a> on my <a href="https://www.raspberrypi.org/products/raspberry-pi-3-model-b/">Raspberry Pi</a>. The <a href="https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3">Arch Linux guide</a> is sufficiant and I followed it mostly overcoming few small hiccups which I plan on documenting here.</p>
+
+<p>The general procedure is to take up a Micro SD card and write the preferred OS in it. Put the card in your pi, apply power, connect ethernet and you are good to go!</p>
+
+<h5 id="step-1">Step 1</h5>
+<p>The first step is to partition the SD card. We will create two partions in our SD card. After inserting the SD card in your computer find out its name in your computer. If your card is named as /dev/sd<strong>X</strong> you can easily follow the arch guide. In my Ubuntu 14.04 system (yeah I know thats old!) it was identified as /dev/mmcblk0p1. This was the minor hiccup I referred above. What it means is that the mmc sub-system of my computer has registered the device in its well known format <code class="highlighter-rouge">mmcblkXpY</code>.</p>
+
+<ul>
+  <li>Each mmc device registered withing the Linux kernel receives it own mmc device number <strong>X</strong>.</li>
+  <li>Each partition on a particular device receives it own number <strong>Y</strong>.More about this <a href="https://stackoverflow.com/a/21752229/5285588">here</a></li>
+</ul>
+
+<p>So just to make things clear when I do <code class="highlighter-rouge">df</code> I have</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	Filesystem     1K-blocks      Used Available Use% Mounted on
+	/dev/mmcblk0p1  15541408         8  15541400   1% /media/arka/5E95-21CD
+</code></pre>
+</div>
+
+<p>And on <code class="highlighter-rouge">lsblk</code> I get</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+	mmcblk0     179:0    0  14.9G  0 disk 
+	└─mmcblk0p1 179:1    0  14.9G  0 part /media/arka/5E95-21CD
+</code></pre>
+</div>
+
+<p>First umount the device</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	umount /dev/mmcblk0p1
+</code></pre>
+</div>
+
+<p>Now we have to create partition in this SD card. Start fdisk to partion:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	fdisk /dev/mmcblk0
+</code></pre>
+</div>
+
+<p>Delete old partions and create new one at fdisk prompt:</p>
+
+<ul>
+  <li>Type <strong>o</strong>. This will clear out any partitions on the drive.</li>
+  <li>Type <strong>p</strong> to list partitions. There should be no partitions left.</li>
+  <li>Type <strong>n</strong>, then <strong>p</strong> for primary, <strong>1</strong> for the first partition on the drive, press <em>ENTER</em> to accept the default first sector, then type <strong>+100M</strong> for the last sector.</li>
+  <li>Type <strong>t</strong>, then <strong>c</strong> to set the first partition to type W95 FAT32 (LBA).</li>
+  <li>Type <strong>n</strong>, then <strong>p</strong> for primary, <strong>2</strong> for the second partition on the drive, and then press <em>ENTER</em> twice to accept the default first and last sector.</li>
+  <li>Write the partition table and exit by typing <strong>w</strong>.</li>
+</ul>
+
+<p>After this if you do <code class="highlighter-rouge">lsblk</code> you should have something like:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+	mmcblk0     179:0    0  14.9G  0 disk 
+	├─mmcblk0p1 179:1    0   100M  0 part 
+	└─mmcblk0p2 179:2    0  14.8G  0 part
+</code></pre>
+</div>
+
+<h5 id="step-2">Step 2</h5>
+<p>Now we have create and mount FAT filesystem in partion 1:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	mkfs.vfat /dev/mmcblk0p1
+	mkdir boot
+	mount /dev/mmcblk0p1 boot
+</code></pre>
+</div>
+
+<h5 id="step-3">Step 3</h5>
+<p>Similarly create and mount ext4filesystem in partition 2:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	mkfs.ext4 /dev/mmcblk0p2
+	mkdir root
+	mount /dev/mmcblk0p2 root
+</code></pre>
+</div>
+
+<h5 id="step-4">Step 4</h5>
+<p>Download and extract the root filesystem (as root, not via sudo):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	wget http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz
+	bsdtar -xpf ArchLinuxARM-rpi-2-latest.tar.gz -C root
+	sync
+</code></pre>
+</div>
+
+<h5 id="step-5">Step 5</h5>
+<p>Move boot files to the first partition:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	mv root/boot/* boot
+</code></pre>
+</div>
+
+<h5 id="step-6">Step 6</h5>
+<p>Unmount the two partitions:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	umount boot root
+</code></pre>
+</div>
+
+<h5 id="step-7">Step 7</h5>
+<p>Insert SD card in Raspberry Pi 3 , connect ethernet and apply power. We can connect to a monitor via HDMI cable and add a USB mouse and keyboard to get started. Better still use SSH to have remote access. Find out the IP of your Pi (via nmap, etc.) and then :</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	ssh alarm@192.168.0.101
+	alarm@192.168.0.101's password: 
+	Welcome to Arch Linux ARM
+
+ 	Website: http://archlinuxarm.org
+   	    Forum: http://archlinuxarm.org/forum
+              IRC: #archlinux-arm on irc.Freenode.net
+	Last login: Sat May 27 13:37:59 2017 from 192.168.0.106
+	[alarm@alarmpi ~]$ pwd
+	/home/alarm
+	[alarm@alarmpi ~]$ 
+</code></pre>
+</div>
+
+<ul>
+  <li>Login as the default user <em>alarm</em> with the password <em>alarm</em>.</li>
+  <li>The default root password is <em>root</em>.</li>
+</ul>
+
+<hr />
+<p>The procedure was simple, credits goes mostly to the well written arch guide. After meddling with the Pi soon you will find sudo is not installed! Hopefully I will get to document that in the future!</p>
+
+<p><strong>Edit</strong>: It is <a href="https://www.reddit.com/r/raspberry_pi/comments/4skwiq/arch_linux_arm_tutorial_part_2_installing_sudo/?st=j3ag3dpv&amp;sh=537cfee1">here</a></p>
+
+
+        </section>
+
+        <footer class="post-footer">
+
+            <!-- Everything inside the #author tags pulls data from the author -->
+            <!-- #author-->
+
+            
+            <figure class="author-image">
+                <a class="img" href="/blogs/author/archie94" style="background-image: url(/blogs/assets/images/arka.jpg)"><span class="hidden">'s Picture</span></a>
+            </figure>
+            
+
+            <section class="author">
+                <h4><a href="/blogs/author/archie94">Arka Prava Basu</a></h4>
+                
+                
+                    <p> CS Undergraduate from NIT Durgapur. Android Developer and technophile.</p>
+                
+                <div class="author-meta">
+                    <span class="author-location icon-location"> West Bengal, India</span> 
+                    <span class="author-link icon-link"><a href="http://archie94.github.io/blogs/"> archie94.github.io/blogs/</a></span> 
+                </div>
+            </section>
+
+            <!-- /author  -->
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="http://twitter.com/share?text=Installing Arch Linux on Raspberry Pi 3 Model B&amp;url=http://archie94.github.io/blogs/install-arch-linux-on-raspberry-pi3-model-b"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://archie94.github.io/blogs/install-arch-linux-on-raspberry-pi3-model-b"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://archie94.github.io/blogs/install-arch-linux-on-raspberry-pi3-model-b"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+            
+            <!-- Add Disqus Comments -->
+            
+            
+        </footer>
+
+    </article>
+
+</main>
+
+<aside class="read-next">
+
+    <!-- [[! next_post ]] -->
+    
+    <!-- [[! /next_post ]] -->
+    <!-- [[! prev_post ]] -->
+    
+        <a class="read-next-story prev " style="background-image: url(/blogs/assets/images/cover9.jpg)" href="/blogs/blog-of-blogs">
+            <section class="post">
+                <h2>Blog of Blogs</h2>
+                <p>Here I plan to keep links of exciting blog posts which I encounter. I will...</p>
+            </section>
+        </a>
+    
+    <!-- [[! /prev_post ]] -->
+</aside>
+
+<!-- /post -->
+
+
+        <footer class="site-footer clearfix">
+          <section class="copyright"><a href="/blogs/">Out of Oblivion</a> &copy; 2017</section>
+          <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> using <a href="https://github.com/biomadeira/jasper">Jasper</a></section>
+        </footer>
+    </div>
+    <!-- [[! Ghost outputs important scripts and data with this tag ]] -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <!-- [[! The main JavaScript file for Casper ]] -->
+    <script type="text/javascript" src="/blogs/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="/blogs/assets/js/index.js"></script>
+
+    <!-- Add Google Analytics  -->
+        <!-- Google Analytics Tracking code -->
+     <script>
+	    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	    ga('create', 'UA-69281367-1', 'auto');
+	    ga('send', 'pageview');
+
+     </script>   
+</body>
+</html>

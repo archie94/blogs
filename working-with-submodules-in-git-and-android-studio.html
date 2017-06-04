@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- [[! Document Settings ]] -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- [[! Page Meta ]] -->
+    <title>Working with submodules in Android Studio and git</title>
+    <meta name="description" content="Out of Oblivion - Random thoughts and findings of a novice coder." />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="/blogs/assets/images/favicon.ico" >
+
+    <!-- [[! Styles'n'Scripts ]] -->
+    <link rel="stylesheet" type="text/css" href="/blogs/assets/css/screen.css" />
+    <link rel="stylesheet" type="text/css"
+          href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+    <link rel="stylesheet" type="text/css" href="/blogs/assets/css/syntax.css" />
+
+    <!-- [[! highlight.js ]] -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- [[! Ghost outputs important style and meta data with this tag ]] -->
+        <link rel="canonical" href="/blogs/" />
+    <meta name="referrer" content="origin" />
+    <link rel="next" href="/blogs/page2/" />
+
+    <meta property="og:site_name" content="Out of Oblivion" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Out of Oblivion" />
+    <meta property="og:description" content="Random thoughts and findings of a novice coder." />
+    <meta property="og:url" content="/blogs/" />
+    <meta property="og:image" content="/blogs/assets/images/cover1.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Out of Oblivion" />
+    <meta name="twitter:description" content="Random thoughts and findings of a novice coder." />
+    <meta name="twitter:url" content="/blogs/" />
+    <meta name="twitter:image:src" content="/blogs/assets/images/cover1.jpg" />
+
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Website",
+    "publisher": "Finding The Way Home",
+    "url": "/blogs/",
+    "image": "/blogs/assets/images/cover1.jpg",
+    "description": "Random thoughts and findings of a novice coder."
+}
+    </script>
+
+    <meta name="generator" content="Jekyll 3.0.0" />
+    <link rel="alternate" type="application/rss+xml" title="Out of Oblivion" href="/blogs/feed.xml" />
+
+
+</head>
+<body class="home-template nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        <li class="nav-home " role="presentation"><a href="/blogs/">Home</a></li>
+        <li class="nav-about " role="presentation"><a href="/blogs/about">About</a></li>
+        <li class="nav-development " role="presentation"><a href="/blogs/tag/development">Development</a></li>
+        <li class="nav-author " role="presentation"><a href="/blogs/author/casper">Author</a></li>
+    </ul>
+    <a class="subscribe-button icon-feed" href="/blogs/feed.xml">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        <!-- [[! Everything else gets inserted here ]] -->
+        <!-- < default -->
+
+<!-- The comment above "< default" means - insert everything in this file into -->
+    <!-- the [body] of the default.hbs template, which contains our header/footer. -->
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<header class="main-header post-head " style="background-image: url(/blogs/assets/images/cover9.jpg) ">
+    <nav class="main-nav  overlay  clearfix">
+        <a class="blog-logo" href="/blogs/"><img src="/blogs/assets/images/home.png" alt="Blog Logo" /></a>
+        
+            <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
+        
+    </nav>
+</header>
+
+<main class="content" role="main">
+
+    <article class="post tag-fiction">
+
+        <header class="post-header">
+            <h1 class="post-title">Working with submodules in Android Studio and git</h1>
+            <section class="post-meta">
+            <!-- <a href='/blogs/'>Arka Prava Basu</a> -->
+            <time class="post-date" datetime="2017-02-01">01 Feb 2017</time>
+                <!-- [[tags prefix=" on "]] -->
+                 
+                on 
+                
+                    
+                       <a href='/blogs/tag/development'>Development</a>
+                       
+                
+                
+            </section>
+        </header>
+
+        <section class="post-content">
+            
+            <p>I encountered working with submodules in Android Studio a while back while I was integrating GIS features with our <a href="https://github.com/sunny5125/pdm">PDM</a> app. Apparently it looked like a simple task, and truth be told it was, I did face a few hiccups getting there. The following will be a documentation of the procedure I followed while I integrated <a href="https://github.com/nextgis/android_gisapp">NextGis Android App</a> with our very own college project.</p>
+
+<h3 id="the-basics">The Basics</h3>
+
+<p>Android Studio provides the option to add sub modules to our existing project. What it means you can import another project (your own or maybe some other repository) and integrate it with your project with ease. As in my case I had to integrate <a href="https://github.com/nextgis/android_gisapp">this</a> repository. Looking closely you will observe that the NextGis android app repository has 2 submodules : <a href="https://github.com/nextgis/android_maplib">maplib</a> and <a href="https://github.com/nextgis/android_maplibui">maplibui</a>.</p>
+
+<p>So I started out forking android_gisapp repository. In order to initialise the submodules within android_gisapp I had to do :</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    git submodule init
+    git submodule update
+</code></pre>
+</div>
+
+<p>and voila, git clones the required submodules into android_gisapp and we are good to go. However for our research work we needed to change some core features of android_gisapp and soon realised it will be better to keep my own forks of maplib and maplibui.</p>
+
+<p>At this point it is better to get acquainted with submodules in git, the best blog which I could find is <a href="https://johnleach.co.uk/words/323/git-submodules-in-n-easy-steps">here</a>. Changing the submodules in my fork of android_gisapp to point to my forks of maplib and maplibui was simple, just change the path in <code class="highlighter-rouge">.gitmodules</code> and do <code class="highlighter-rouge">git submodule update</code>. Finally push the changes.</p>
+
+<h3 id="changing-a-project-to-build-as-a-library">Changing a project to build as a library</h3>
+
+<p>This was the part in which I was stuck the most. I realised we cannot use an <code class="highlighter-rouge">apk</code> as a dependency in android project and it supports only <code class="highlighter-rouge">jar</code> and <code class="highlighter-rouge">aar</code> dependencies as of now. The alternative was to compile the android_gisapp as a library and include the <code class="highlighter-rouge">aar</code> file in dependency. I decided to keep my fork of android_gisapp as a module in our PDM app. That way we can change the submodules as we are developing PDM. So the project modules in PDM will look like</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    app
+     |
+     |--android_gisapp
+ 	         |
+ 	         |--maplib
+ 	         |--maplibui
+</code></pre>
+</div>
+
+<p>Before adding android_gisapp as a submodule since an android project cannot have two modules with same name I had to change the main module name of android_gispp from <code class="highlighter-rouge">app</code> to <code class="highlighter-rouge">android_gisapp</code>. To do this we can use the refractor option in android studio or change in <code class="highlighter-rouge">settings.gradle</code></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    include ':app', ':maplib', ':maplibui'
+</code></pre>
+</div>
+
+<p>to</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    include ':gisapp', ':maplib', ':maplibui'
+</code></pre>
+</div>
+
+<p>After that I had to build android_gisapp as a library project. We cannot have two different apks for the same project and changes had to be made in this regard. To build project as a library head to <code class="highlighter-rouge">build.gradle</code> and change</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    apply plugin: 'com.android.application'
+</code></pre>
+</div>
+
+<p>to</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    apply plugin: 'com.android.library'
+</code></pre>
+</div>
+
+<p>We have to remove <code class="highlighter-rouge">applicationId</code> under <code class="highlighter-rouge">defaultConfig</code> and also the following section :</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    applicationVariants.all { variant -&gt;
+             variant.outputs.each { output -&gt;
+                 output.outputFile = new File(output.outputFile.parent, "ngmobile-" + defaultConfig.versionName + ".apk")
+             }
+         }
+</code></pre>
+</div>
+
+<p>Change category of the <code class="highlighter-rouge">LAUNCHER</code> activity to <code class="highlighter-rouge">DEFAULT</code> (in general it is likely that you will have a <code class="highlighter-rouge">LAUNCHER</code> activity in your main project)
+Then do a fresh build of the project and push the changes to remote.</p>
+
+<h3 id="adding-an-existing-repository-as-module-in-pdm">Adding an existing repository as module in PDM</h3>
+
+<p>The next bit was simple. I had to include my fork of android_gisapp as a submodule in PDM. In PDM directory I had to</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    git submodule add &lt;link to my fork of android_gisapp&gt;
+    git init
+    git submodule update
+    cd android_gisapp
+    git submodule init
+    git submodule update
+</code></pre>
+</div>
+
+<p>Then in Android Studio File-&gt;Project Structure-&gt;app-&gt;add a new module and give the path to android_gisapp. After that do a clean build.</p>
+
+<p>Hopefully this integration was proper and meaningful. Upto now it has been all good. It is super easy to maintain all 4 repositories. Two noteworthy points are</p>
+
+<ul>
+  <li>always explicitely checkout to a branch in a submodule in git. Failure to do this may lead to HEAD detached.</li>
+  <li>after commiting changes in submodules we must push them. Only after that we can add the changes and reflect them in parent module.</li>
+</ul>
+
+<p>Like all things in git, the learning curve is steep but there are immense possibilities to get out of it once we get the basic concepts. I will keep updating this thread if I have missed some part, for any major updates or changes I will make a separate blog. Till then adios!</p>
+
+<h3 id="credits">Credits</h3>
+
+<p>A very big shout out to <a href="http://nextgis.com/">NextGis</a> for keeping such a well documented repository to provide Opensource GIS application for android.</p>
+
+
+        </section>
+
+        <footer class="post-footer">
+
+            <!-- Everything inside the #author tags pulls data from the author -->
+            <!-- #author-->
+
+            
+            <figure class="author-image">
+                <a class="img" href="/blogs/author/archie94" style="background-image: url(/blogs/assets/images/arka.jpg)"><span class="hidden">'s Picture</span></a>
+            </figure>
+            
+
+            <section class="author">
+                <h4><a href="/blogs/author/archie94">Arka Prava Basu</a></h4>
+                
+                
+                    <p> CS Undergraduate from NIT Durgapur. Android Developer and technophile.</p>
+                
+                <div class="author-meta">
+                    <span class="author-location icon-location"> West Bengal, India</span> 
+                    <span class="author-link icon-link"><a href="http://archie94.github.io/blogs/"> archie94.github.io/blogs/</a></span> 
+                </div>
+            </section>
+
+            <!-- /author  -->
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="http://twitter.com/share?text=Working with submodules in Android Studio and git&amp;url=http://archie94.github.io/blogs/working-with-submodules-in-git-and-android-studio"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://archie94.github.io/blogs/working-with-submodules-in-git-and-android-studio"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://archie94.github.io/blogs/working-with-submodules-in-git-and-android-studio"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+            
+            <!-- Add Disqus Comments -->
+            
+            
+        </footer>
+
+    </article>
+
+</main>
+
+<aside class="read-next">
+
+    <!-- [[! next_post ]] -->
+    
+        <a class="read-next-story " style="background-image: url(/blogs/assets/images/cover9.jpg)" href="/blogs/blog-of-blogs">
+            <section class="post">
+                <h2>Blog of Blogs</h2>
+                <p>Here I plan to keep links of exciting blog posts which I encounter. I will...</p>
+            </section>
+        </a>
+    
+    <!-- [[! /next_post ]] -->
+    <!-- [[! prev_post ]] -->
+    
+    <!-- [[! /prev_post ]] -->
+</aside>
+
+<!-- /post -->
+
+
+        <footer class="site-footer clearfix">
+          <section class="copyright"><a href="/blogs/">Out of Oblivion</a> &copy; 2017</section>
+          <section class="poweredby">Proudly published with <a href="https://jekyllrb.com/">Jekyll</a> using <a href="https://github.com/biomadeira/jasper">Jasper</a></section>
+        </footer>
+    </div>
+    <!-- [[! Ghost outputs important scripts and data with this tag ]] -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <!-- [[! The main JavaScript file for Casper ]] -->
+    <script type="text/javascript" src="/blogs/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="/blogs/assets/js/index.js"></script>
+
+    <!-- Add Google Analytics  -->
+        <!-- Google Analytics Tracking code -->
+     <script>
+	    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	    ga('create', 'UA-69281367-1', 'auto');
+	    ga('send', 'pageview');
+
+     </script>   
+</body>
+</html>
