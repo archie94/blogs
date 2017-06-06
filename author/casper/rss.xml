@@ -12,6 +12,52 @@
    <atom:link href="rss" rel="self" type="application/rss+xml" />
    
 	<item>
+	  <title>Setting up Travis CI for the blog</title>
+	  <link>/blogs//setting-up-travis-ci</link>
+	  <author>Arka Prava Basu</author>
+	  <pubDate>2017-06-05T00:00:00+00:00</pubDate>
+	  <guid>/blogs//setting-up-travis-ci</guid>
+	  <description><![CDATA[
+	     <p>If your blog is a fork of <a href="https://github.com/biomadeira/jasper/">Jasper</a> and you host it in github then you might have noticed that author pages and tag pages returns 404 error. The reasion as mentioned in this <a href="https://github.com/biomadeira/jasper/issues/16">issue</a> is that Github restricts running plugins for security reasons. <a href="https://github.com/biomadeira">Fábio Madeira</a> describes two workaround for this issue and here I am going to describe the second one.</p>
+
+<p>Firstly in <code class="highlighter-rouge">_config.yml</code> we need to specify which repository we wish to build with travic-ci with the travis gem. The git url in github for any repository is of the form <code class="highlighter-rouge">https://github.com/USERNAME/REPO.git</code>.</p>
+
+<ul>
+  <li>Change username to your github username,</li>
+  <li>repo to the name of the repository (for me it is blogs),</li>
+  <li>branch to the name of the branch from which you want to build your project (I have kept it master),</li>
+  <li>relative source is the path to your project w.r.t. the configuration file (since configuration file is mostly at the root of the project it will be <code class="highlighter-rouge">../PROJECT_NAME/</code>) and</li>
+  <li>destination path where travis-ci will clone your project.</li>
+  <li>After this change the production_url (for hosting in github it is <code class="highlighter-rouge">https://USERNAME.github.io/REPO</code>) and</li>
+  <li>source_url (again should be of the form <code class="highlighter-rouge">https://github.com/USERNAME/REPO/</code>).</li>
+</ul>
+
+<p><img src="assets/images/s1.png" alt="Code" /></p>
+
+<p>Now we need to create the <code class="highlighter-rouge">.travis.yml</code> file. Follow <a href="https://docs.travis-ci.com/user/languages/ruby/">this</a> to get started. Keep the ruby version to which you are using in your project. After this we need to generate a secure key with travis gem. First get your Github token from your Travis CI profile page.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	gem install travis
+	travis encrypt 'GIT_NAME="YOUR_USERNAME" GIT_EMAIL="YOUR_EMAIL" GH_TOKEN=YOUR_TOKEN'
+</code></pre>
+</div>
+
+<ul>
+  <li><code class="highlighter-rouge">GIT_NAME</code> is your Github username,</li>
+  <li>Obtain <code class="highlighter-rouge">GH_TOKEN</code> from <code class="highlighter-rouge">https://github.com/settings/tokens</code>.</li>
+</ul>
+
+<p>Add the secure key and specify the branch from where to build your project. Should look something like this:</p>
+
+<p><img src="assets/images/s2.png" alt="Code" /></p>
+
+<p>Travis CI should build from your specified branch every time you push after this setup!</p>
+
+<p>After successful build got to <code class="highlighter-rouge">https://USERNAME.github.io/REPO</code> and see this time the author page and tag pages should work fine.</p>
+
+	  ]]></description>
+	</item>
+
+	<item>
 	  <title>Installing Arch Linux on Raspberry Pi 3 Model B</title>
 	  <link>/blogs//install-arch-linux-on-raspberry-pi3-model-b</link>
 	  <author>Arka Prava Basu</author>

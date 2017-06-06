@@ -8,6 +8,21 @@
     
       
       <item>
+        <title>Setting up Travis CI for the blog</title>
+        
+          <description>&lt;p&gt;If your blog is a fork of &lt;a href=&quot;https://github.com/biomadeira/jasper/&quot;&gt;Jasper&lt;/a&gt; and you host it in github then you might have noticed that author pages and tag pages returns 404 error. The reasion as mentioned in this &lt;a href=&quot;https://github.com/biomadeira/jasper/issues/16&quot;&gt;issue&lt;/a&gt; is that Github restricts running plugins for security reasons. &lt;a href=&quot;https://github.com/biomadeira&quot;&gt;Fábio Madeira&lt;/a&gt; describes two workaround for this issue and here I am going to describe the second one.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Mon, 05 Jun 2017 00:00:00 +0000</pubDate>
+        <link>
+        http://archie94.github.io/blogs//setting-up-travis-ci</link>
+        <guid isPermaLink="true">http://archie94.github.io/blogs//setting-up-travis-ci</guid>
+      </item>
+      
+    
+      
+      <item>
         <title>Installing Arch Linux on Raspberry Pi 3 Model B</title>
         
           <description>&lt;p&gt;Today I installed &lt;a href=&quot;https://www.archlinux.org/&quot;&gt;Arch Linux&lt;/a&gt; on my &lt;a href=&quot;https://www.raspberrypi.org/products/raspberry-pi-3-model-b/&quot;&gt;Raspberry Pi&lt;/a&gt;. The &lt;a href=&quot;https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3&quot;&gt;Arch Linux guide&lt;/a&gt; is sufficiant and I followed it mostly overcoming few small hiccups which I plan on documenting here.&lt;/p&gt;
