@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- [[! Page Meta ]] -->
-    <title>Setting up Travis CI for the blog</title>
+    <title>Ralink RT 3290 bluetooth kernel module for linux</title>
     <meta name="description" content="Out of Oblivion - Random thoughts and findings of a novice coder." />
 
     <meta name="HandheldFriendly" content="True" />
@@ -94,7 +94,7 @@
 <!-- Everything inside the #post tags pulls data from the post -->
 <!-- #post -->
 
-<header class="main-header post-head " style="background-image: url(/blogs/assets/images/travisci.jpg) ">
+<header class="main-header post-head " style="background-image: url(/blogs/assets/images/bluetooth_ubuntu_1.jpg) ">
     <nav class="main-nav  overlay  clearfix">
         <a class="blog-logo" href="/blogs/"><img src="/blogs/assets/images/home.png" alt="Blog Logo" /></a>
         
@@ -108,16 +108,16 @@
     <article class="post tag-fiction">
 
         <header class="post-header">
-            <h1 class="post-title">Setting up Travis CI for the blog</h1>
+            <h1 class="post-title">Ralink RT 3290 bluetooth kernel module for linux</h1>
             <section class="post-meta">
             <!-- <a href='/blogs/'>Arka Prava Basu</a> -->
-            <time class="post-date" datetime="2017-06-05">05 Jun 2017</time>
+            <time class="post-date" datetime="2017-12-24">24 Dec 2017</time>
                 <!-- [[tags prefix=" on "]] -->
                  
                 on 
                 
                     
-                       <a href='/blogs/tag/development'>Development</a>
+                       <a href='/blogs/tag/DevOps'>Devops</a>
                        
                 
                 
@@ -126,41 +126,58 @@
 
         <section class="post-content">
             
-            <p>If your blog is a fork of <a href="https://github.com/biomadeira/jasper/">Jasper</a> and you host it in github then you might have noticed that author pages and tag pages returns 404 error. The reasion as mentioned in this <a href="https://github.com/biomadeira/jasper/issues/16">issue</a> is that Github restricts running plugins for security reasons. <a href="https://github.com/biomadeira">Fábio Madeira</a> describes two workaround for this issue and here I am going to describe the second one.</p>
+            <p>Bluetooth has been a pain point on my Ubuntu from the start. I did not mind it but now having recently bought a wireless earphones it irks me. A large part of the community suffers from this problem with the Ralink RT 3290 card. WiFi works fine but Bluetooth is always disabled under settings.</p>
 
-<p>Firstly in <code class="highlighter-rouge">_config.yml</code> we need to specify which repository we wish to build with travic-ci with the travis gem. The git url in github for any repository is of the form <code class="highlighter-rouge">https://github.com/USERNAME/REPO.git</code>.</p>
+<p>Turns out the installed driver for RT 3290 card is buggy and we are better off using a third party one. Download the latest release of the <a href="https://github.com/loimu/rtbth-dkms">driver</a>. Unzip it. I put the source on Desktop.</p>
 
 <ul>
-  <li>Change username to your github username,</li>
-  <li>repo to the name of the repository (for me it is blogs),</li>
-  <li>branch to the name of the branch from which you want to build your project (I have kept it master),</li>
-  <li>relative source is the path to your project w.r.t. the configuration file (since configuration file is mostly at the root of the project it will be <code class="highlighter-rouge">../PROJECT_NAME/</code>) and</li>
-  <li>destination path where travis-ci will clone your project.</li>
-  <li>After this change the production_url (for hosting in github it is <code class="highlighter-rouge">https://USERNAME.github.io/REPO</code>) and</li>
-  <li>source_url (again should be of the form <code class="highlighter-rouge">https://github.com/USERNAME/REPO/</code>).</li>
-</ul>
+  <li>
+    <p>Update package lists and install kernel header files.</p>
 
-<p><img src="assets/images/s1.png" alt="Code" /></p>
-
-<p>Now we need to create the <code class="highlighter-rouge">.travis.yml</code> file. Follow <a href="https://docs.travis-ci.com/user/languages/ruby/">this</a> to get started. Keep the ruby version to which you are using in your project. After this we need to generate a secure key with travis gem. First get your Github token from your Travis CI profile page.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>	gem install travis
-	travis encrypt 'GIT_NAME="YOUR_USERNAME" GIT_EMAIL="YOUR_EMAIL" GH_TOKEN=YOUR_TOKEN'
+    <div class="highlighter-rouge"><pre class="highlight"><code>  sudo apt-get update
+  sudo apt-get install build-esspeential linux-headers-generic
 </code></pre>
-</div>
+    </div>
+  </li>
+  <li>
+    <p>Now in our directory (I put it in <code class="highlighter-rouge">~/Desktop/rtbth-dkms-3.9.5</code>) where we unzipped the source run the following commands</p>
 
-<ul>
-  <li><code class="highlighter-rouge">GIT_NAME</code> is your Github username,</li>
-  <li>Obtain <code class="highlighter-rouge">GH_TOKEN</code> from <code class="highlighter-rouge">https://github.com/settings/tokens</code>.</li>
+    <div class="highlighter-rouge"><pre class="highlight"><code>  make
+  sudo make install
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Put the source in <code class="highlighter-rouge">/usr/src</code></p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  sudo cp -r ~/Desktop/rtbth-dkms-3.9.5 /usr/src/rtbth-3.9.5
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Dynamically install kernel module</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  sudo dkms install rtbth/3.9.5
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Lastly ask the kernel to load the module at boot time. Add <code class="highlighter-rouge">rtbth</code> at the end of the file and save it.</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  sudo vim /etc/modules
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Reboot your machine.</p>
+  </li>
 </ul>
 
-<p>Add the secure key and specify the branch from where to build your project. Should look something like this:</p>
+<p>This got my bluetooth working. Hopefully it will get yours to work too! Time to enjoy a movie with my earphones XD.</p>
 
-<p><img src="assets/images/s2.png" alt="Code" /></p>
+<p>Ref: <a href="https://askubuntu.com/questions/778615/ralink-rt-3290-bluetooth-problem-on-ubuntu-16-04">askubuntu</a></p>
 
-<p>Travis CI should build from your specified branch every time you push after this setup!</p>
-
-<p>After successful build got to <code class="highlighter-rouge">https://USERNAME.github.io/REPO</code> and see this time the author page and tag pages should work fine.</p>
+<p>Credits: <a href="https://github.com/loimu">blaze</a>, <a href="https://askubuntu.com/users/703994/n-sinha">N.Sinha</a></p>
 
 
         </section>
@@ -192,15 +209,15 @@
 
             <section class="share">
                 <h4>Share this post</h4>
-                <a class="icon-twitter" href="http://twitter.com/share?text=Setting up Travis CI for the blog&amp;url=http://archie94.github.io/blogs/setting-up-travis-ci"
+                <a class="icon-twitter" href="http://twitter.com/share?text=Ralink RT 3290 bluetooth kernel module for linux&amp;url=http://archie94.github.io/blogs/ralink-rt-3290-bluetooth-kernel-module"
                     onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                     <span class="hidden">Twitter</span>
                 </a>
-                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://archie94.github.io/blogs/setting-up-travis-ci"
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://archie94.github.io/blogs/ralink-rt-3290-bluetooth-kernel-module"
                     onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
                     <span class="hidden">Facebook</span>
                 </a>
-                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://archie94.github.io/blogs/setting-up-travis-ci"
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://archie94.github.io/blogs/ralink-rt-3290-bluetooth-kernel-module"
                    onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
                     <span class="hidden">Google+</span>
                 </a>
@@ -219,20 +236,13 @@
 
     <!-- [[! next_post ]] -->
     
-        <a class="read-next-story " style="background-image: url(/blogs/assets/images/bluetooth_ubuntu_1.jpg)" href="/blogs/ralink-rt-3290-bluetooth-kernel-module">
-            <section class="post">
-                <h2>Ralink RT 3290 bluetooth kernel module for linux</h2>
-                <p>Bluetooth has been a pain point on my Ubuntu from the start. I did not...</p>
-            </section>
-        </a>
-    
     <!-- [[! /next_post ]] -->
     <!-- [[! prev_post ]] -->
     
-        <a class="read-next-story prev " style="background-image: url(/blogs/assets/images/cover-pi.jpg)" href="/blogs/install-arch-linux-on-raspberry-pi3-model-b">
+        <a class="read-next-story prev " style="background-image: url(/blogs/assets/images/travisci.jpg)" href="/blogs/setting-up-travis-ci">
             <section class="post">
-                <h2>Installing Arch Linux on Raspberry Pi 3 Model B</h2>
-                <p>Today I installed Arch Linux on my Raspberry Pi. The Arch Linux guide is sufficiant...</p>
+                <h2>Setting up Travis CI for the blog</h2>
+                <p>If your blog is a fork of Jasper and you host it in github then...</p>
             </section>
         </a>
     

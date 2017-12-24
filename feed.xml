@@ -8,6 +8,21 @@
     
       
       <item>
+        <title>Ralink RT 3290 bluetooth kernel module for linux</title>
+        
+          <description>&lt;p&gt;Bluetooth has been a pain point on my Ubuntu from the start. I did not mind it but now having recently bought a wireless earphones it irks me. A large part of the community suffers from this problem with the Ralink RT 3290 card. WiFi works fine but Bluetooth is always disabled under settings.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Sun, 24 Dec 2017 00:00:00 +0000</pubDate>
+        <link>
+        http://archie94.github.io/blogs//ralink-rt-3290-bluetooth-kernel-module</link>
+        <guid isPermaLink="true">http://archie94.github.io/blogs//ralink-rt-3290-bluetooth-kernel-module</guid>
+      </item>
+      
+    
+      
+      <item>
         <title>Setting up Travis CI for the blog</title>
         
           <description>&lt;p&gt;If your blog is a fork of &lt;a href=&quot;https://github.com/biomadeira/jasper/&quot;&gt;Jasper&lt;/a&gt; and you host it in github then you might have noticed that author pages and tag pages returns 404 error. The reasion as mentioned in this &lt;a href=&quot;https://github.com/biomadeira/jasper/issues/16&quot;&gt;issue&lt;/a&gt; is that Github restricts running plugins for security reasons. &lt;a href=&quot;https://github.com/biomadeira&quot;&gt;Fábio Madeira&lt;/a&gt; describes two workaround for this issue and here I am going to describe the second one.&lt;/p&gt;

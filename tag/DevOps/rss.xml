@@ -12,6 +12,69 @@
    <atom:link href="rss" rel="self" type="application/rss+xml" />
    
 	<item>
+	  <title>Ralink RT 3290 bluetooth kernel module for linux</title>
+	  <link>/blogs//ralink-rt-3290-bluetooth-kernel-module</link>
+	  <author>Arka Prava Basu</author>
+	  <pubDate>2017-12-24T00:00:00+00:00</pubDate>
+	  <guid>/blogs//ralink-rt-3290-bluetooth-kernel-module</guid>
+	  <description><![CDATA[
+	     <p>Bluetooth has been a pain point on my Ubuntu from the start. I did not mind it but now having recently bought a wireless earphones it irks me. A large part of the community suffers from this problem with the Ralink RT 3290 card. WiFi works fine but Bluetooth is always disabled under settings.</p>
+
+<p>Turns out the installed driver for RT 3290 card is buggy and we are better off using a third party one. Download the latest release of the <a href="https://github.com/loimu/rtbth-dkms">driver</a>. Unzip it. I put the source on Desktop.</p>
+
+<ul>
+  <li>
+    <p>Update package lists and install kernel header files.</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  sudo apt-get update
+  sudo apt-get install build-esspeential linux-headers-generic
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Now in our directory (I put it in <code class="highlighter-rouge">~/Desktop/rtbth-dkms-3.9.5</code>) where we unzipped the source run the following commands</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  make
+  sudo make install
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Put the source in <code class="highlighter-rouge">/usr/src</code></p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  sudo cp -r ~/Desktop/rtbth-dkms-3.9.5 /usr/src/rtbth-3.9.5
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Dynamically install kernel module</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  sudo dkms install rtbth/3.9.5
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Lastly ask the kernel to load the module at boot time. Add <code class="highlighter-rouge">rtbth</code> at the end of the file and save it.</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  sudo vim /etc/modules
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Reboot your machine.</p>
+  </li>
+</ul>
+
+<p>This got my bluetooth working. Hopefully it will get yours to work too! Time to enjoy a movie with my earphones XD.</p>
+
+<p>Ref: <a href="https://askubuntu.com/questions/778615/ralink-rt-3290-bluetooth-problem-on-ubuntu-16-04">askubuntu</a></p>
+
+<p>Credits: <a href="https://github.com/loimu">blaze</a>, <a href="https://askubuntu.com/users/703994/n-sinha">N.Sinha</a></p>
+
+	  ]]></description>
+	</item>
+
+	<item>
 	  <title>Installing Arch Linux on Raspberry Pi 3 Model B</title>
 	  <link>/blogs//install-arch-linux-on-raspberry-pi3-model-b</link>
 	  <author>Arka Prava Basu</author>
