@@ -15,7 +15,7 @@
 	  <title>Ralink RT 3290 bluetooth kernel module for linux</title>
 	  <link>/blogs//ralink-rt-3290-bluetooth-kernel-module</link>
 	  <author>Arka Prava Basu</author>
-	  <pubDate>2017-12-24T00:00:00+00:00</pubDate>
+	  <pubDate>2017-12-23T00:00:00+00:00</pubDate>
 	  <guid>/blogs//ralink-rt-3290-bluetooth-kernel-module</guid>
 	  <description><![CDATA[
 	     <p>Bluetooth has been a pain point on my Ubuntu from the start. I did not mind it but now having recently bought a wireless earphones it irks me. A large part of the community suffers from this problem with the Ralink RT 3290 card. WiFi works fine but Bluetooth is always disabled under settings.</p>
