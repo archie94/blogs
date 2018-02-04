@@ -8,14 +8,14 @@ language: 'en-uk'
 
 # Website info
 name: 'Out of Oblivion'
-description: "Random thoughts and findings of a novice coder."
+description: "My digital notebook."
 
 # Author's info
 author: 'Arka Prava Basu'
 # edit 'categories' in the front matter of every post to match this username
 nickname: archie94
 bio: 'CS Undergraduate from NIT Durgapur. Android Developer and technophile.'
-location: 'West Bengal, India'
+location: 'Gurgaon, India'
 url: 'http://archie94.github.io/blogs/'
 image: 'assets/images/arka.jpg'
 
