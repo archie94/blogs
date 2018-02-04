@@ -8,6 +8,8 @@
         
         <li class="nav-about {% if page.current == 'about' %} nav-current{% endif %}" role="presentation"><a href="{{ site.baseurl }}about">About</a></li>
 
+        <li class="nav-cp {% if page.url contains 'cp' %} nav-current{% endif %}" role="presentation"><a href="{{ site.baseurl }}tag/cp">Competitive Coding</a></li>
+
         <li class="nav-development {% if page.url contains 'development' %} nav-current{% endif %}" role="presentation"><a href="{{ site.baseurl }}tag/development">Development</a></li>
         
         <li class="nav-devops {% if page.url contains 'devops' %} nav-current{% endif %}" role="presentation"><a href="{{ site.baseurl }}tag/DevOps">DevOps</a></li>
