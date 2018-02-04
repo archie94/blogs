@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+   
+      <title>archie94.github.io/blogs/</title>
+   
+   <link>http://archie94.github.io/blogs/</link>
+   <description>My digital notebook.</description>
+   <language>en-uk</language>
+   <managingEditor> Arka Prava Basu</managingEditor>
+   <atom:link href="rss" rel="self" type="application/rss+xml" />
+   
+	<item>
+	  <title>CP Cookbook</title>
+	  <link>/blogs//cp-cookbook</link>
+	  <author>Arka Prava Basu</author>
+	  <pubDate>2018-02-04T00:00:00+00:00</pubDate>
+	  <guid>/blogs//cp-cookbook</guid>
+	  <description><![CDATA[
+	     <p>Similar to my Blog of Blogs post but more focussed on competitive coding.</p>
+
+<ul>
+  <li><a href="http://applet-magic.com/digitsummod9.htm">The Digit Sum of a Number to Base 10 is Equivalent to Its Remainder Upon Division by 9</a></li>
+</ul>
+
+	  ]]></description>
+	</item>
+
+
+</channel>
+</rss>

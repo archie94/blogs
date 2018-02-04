@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- [[! Page Meta ]] -->
-    <title>Out of Oblivion</title>
+    <title>Out Of Oblivion</title>
     <meta name="description" content="Out of Oblivion - My digital notebook." />
 
     <meta name="HandheldFriendly" content="True" />
@@ -60,7 +60,7 @@
 
 
 </head>
-<body class="tag-template nav-closed">
+<body class="paged archive-template nav-closed">
 
     <div class="nav">
     <h3 class="nav-title">Menu</h3>
@@ -68,7 +68,7 @@
         <span class="hidden">Close</span>
     </a>
     <ul>
-        <li class="nav-home " role="presentation"><a href="/blogs/">Home</a></li>
+        <li class="nav-home  nav-current" role="presentation"><a href="/blogs/">Home</a></li>
         
         <li class="nav-about " role="presentation"><a href="/blogs/about">About</a></li>
 
@@ -88,14 +88,12 @@
     <div class="site-wrapper">
 
         <!-- [[! Everything else gets inserted here ]] -->
-        <!-- < dynamically overriding backgrounds for tags as well as descriptions -->
-
-
-<!-- < default}} -->
+        <!-- < default -->
 <!-- The tag above means - insert everything in this file into the [body] of the default.hbs template -->
 
-<!-- If we have a tag cover, display that - else blog cover - else nothing -->
-<header class="main-header tag-head " style="background-image: url(/blogs/assets/images/cover2.jpg) ">
+<!-- The big featured header  -->
+<header class="main-header "
+        style="background-image: url(/blogs/assets/images/cover1.jpg) ">
     <nav class="main-nav overlay clearfix">
         <a class="blog-logo" href="/blogs/"><img src="/blogs/assets/images/home.png" alt="Blog Logo" /></a>
         
@@ -104,14 +102,11 @@
     </nav>
     <div class="vertical">
         <div class="main-header-content inner">
-            <h1 class="page-title">Devops</h1>
-            <h2 class="page-description">
-            
-			    A 2-post collection
-            
-            </h2>
+            <h1 class="page-title">Out of Oblivion</h1>
+            <h2 class="page-description">My digital notebook.</h2>
         </div>
     </div>
+    <a class="scroll-down icon-arrow-left" href="#content" data-offset="-45"><span class="hidden">Scroll Down</span></a>
 </header>
 
 <!-- The main content area on the homepage -->
@@ -123,7 +118,11 @@
         
             <nav class="pagination" role="pagination">
     
-    <span class="page-number"> Page 1 of 1 </span>
+        
+            <a class="newer-posts" href="/blogs/" title="Previous Page">&laquo; Newer Posts</a>
+        
+    
+    <span class="page-number"> Page 2 of 2 </span>
      
 </nav>
         
@@ -133,10 +132,10 @@
     
     <article class="post">
         <header class="post-header">
-            <h2 class="post-title"><a href="/blogs/ralink-rt-3290-bluetooth-kernel-module">Ralink RT 3290 bluetooth kernel module for linux</a></h2>
+            <h2 class="post-title"><a href="/blogs/working-with-submodules-in-git-and-android-studio">Working with submodules in Android Studio and git</a></h2>
         </header>
         <section class="post-excerpt">
-            <p>Bluetooth has been a pain point on my Ubuntu from the start. I did not mind it but now having recently bought a wireless earphones it... <a class="read-more" href="/blogs/ralink-rt-3290-bluetooth-kernel-module">&raquo;</a></p>
+            <p>I encountered working with submodules in Android Studio a while back while I was integrating GIS features with our PDM app. Apparently it looked like a... <a class="read-more" href="/blogs/working-with-submodules-in-git-and-android-studio">&raquo;</a></p>
         </section>
         <footer class="post-meta">
             <img class="author-thumb" src="/blogs/assets/images/arka.jpg" alt="Author image" nopin="nopin" />
@@ -147,35 +146,11 @@
                 on 
                 
                     
-                       <a href='/blogs/tag/DevOps'>Devops</a>
+                       <a href='/blogs/tag/development'>Development</a>
                        
                 
             
-            <time class="post-date" datetime="2017-12-23">23 Dec 2017</time>
-        </footer>
-    </article>
-    
-    <article class="post">
-        <header class="post-header">
-            <h2 class="post-title"><a href="/blogs/install-arch-linux-on-raspberry-pi3-model-b">Installing Arch Linux on Raspberry Pi 3 Model B</a></h2>
-        </header>
-        <section class="post-excerpt">
-            <p>Today I installed Arch Linux on my Raspberry Pi. The Arch Linux guide is sufficiant and I followed it mostly overcoming few small hiccups which I... <a class="read-more" href="/blogs/install-arch-linux-on-raspberry-pi3-model-b">&raquo;</a></p>
-        </section>
-        <footer class="post-meta">
-            <img class="author-thumb" src="/blogs/assets/images/arka.jpg" alt="Author image" nopin="nopin" />
-            <!-- author -->
-            <a href='/blogs/author/archie94'>Arka Prava Basu</a>
-            <!-- [[tags prefix=" on "]] -->
-             
-                on 
-                
-                    
-                       <a href='/blogs/tag/DevOps'>Devops</a>
-                       
-                
-            
-            <time class="post-date" datetime="2017-05-26">26 May 2017</time>
+            <time class="post-date" datetime="2017-02-01">01 Feb 2017</time>
         </footer>
     </article>
     
@@ -184,13 +159,18 @@
     
         <nav class="pagination" role="pagination">
     
-    <span class="page-number"> Page 1 of 1 </span>
+        
+            <a class="newer-posts" href="/blogs/" title="Previous Page">&laquo; Newer Posts</a>
+        
+    
+    <span class="page-number"> Page 2 of 2 </span>
      
 </nav>
     
 
 
 </main>
+
 
         <footer class="site-footer clearfix">
           <section class="copyright"><a href="/blogs/">Out of Oblivion</a> &copy; 2018</section>
