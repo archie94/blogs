@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- [[! Page Meta ]] -->
-    <title>Ralink RT 3290 bluetooth kernel module for linux</title>
+    <title>Untrack files in Git</title>
     <meta name="description" content="Out of Oblivion - My digital notebook." />
 
     <meta name="HandheldFriendly" content="True" />
@@ -78,7 +78,7 @@
         
         <li class="nav-devops " role="presentation"><a href="/blogs/tag/DevOps">DevOps</a></li>
 
-        <li class="nav-git " role="presentation"><a href="/blogs/tag/git">Git</a></li>
+        <li class="nav-git  nav-current" role="presentation"><a href="/blogs/tag/git">Git</a></li>
         
         <li class="nav-author " role="presentation"><a href="/blogs/author/casper">Author</a></li>
     </ul>
@@ -98,9 +98,9 @@
 <!-- Everything inside the #post tags pulls data from the post -->
 <!-- #post -->
 
-<header class="main-header post-head " style="background-image: url(/blogs/assets/images/bluetooth_ubuntu_1.jpg) ">
+<header class="main-header post-head " style="background-image: url(/blogs/assets/images/git_1.png) ">
     <nav class="main-nav  overlay  clearfix">
-        <a class="blog-logo" href="/blogs/"><img src="/blogs/assets/images/home.png" alt="Blog Logo" /></a>
+        <a class="blog-logo" href="/blogs/"><img src="/blogs/assets/images/git_logo.png" alt="Blog Logo" /></a>
         
             <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
         
@@ -112,16 +112,16 @@
     <article class="post tag-fiction">
 
         <header class="post-header">
-            <h1 class="post-title">Ralink RT 3290 bluetooth kernel module for linux</h1>
+            <h1 class="post-title">Untrack files in Git</h1>
             <section class="post-meta">
             <!-- <a href='/blogs/'>Arka Prava Basu</a> -->
-            <time class="post-date" datetime="2017-12-23">23 Dec 2017</time>
+            <time class="post-date" datetime="2018-05-05">05 May 2018</time>
                 <!-- [[tags prefix=" on "]] -->
                  
                 on 
                 
                     
-                       <a href='/blogs/tag/DevOps'>Devops</a>
+                       <a href='/blogs/tag/git'>Git</a>
                        
                 
                 
@@ -130,58 +130,22 @@
 
         <section class="post-content">
             
-            <p>Bluetooth has been a pain point on my Ubuntu from the start. I did not mind it but now having recently bought a wireless earphones it irks me. A large part of the community suffers from this problem with the Ralink RT 3290 card. WiFi works fine but Bluetooth is always disabled under settings.</p>
+            <p>Adding file paths to <code class="highlighter-rouge">.gitignore</code> in a project untracks them. Changes in those files will not be tracked and we are good to go. What if we do need a version of a file to be pushed in the repository? Say in our project we have a file <code class="highlighter-rouge">keys</code> which contains the a pair of keys. We do not wish to push the credentials to our repo, but we would like to keep the file <code class="highlighter-rouge">keys</code> in our repository.</p>
 
-<p>Turns out the installed driver for RT 3290 card is buggy and we are better off using a third party one. Download the latest release of the <a href="https://github.com/loimu/rtbth-dkms">driver</a>. Unzip it. I put the source on Desktop.</p>
+<p>Running <code class="highlighter-rouge">git rm --cached &lt;file-path&gt;</code> will remove the path from index. The subsequent push will delete the file from remote. It did not help me. So here is what I did.</p>
 
 <ul>
-  <li>
-    <p>Update package lists and install kernel header files.</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code>  sudo apt-get update
-  sudo apt-get install build-esspeential linux-headers-generic
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>Now in our directory (I put it in <code class="highlighter-rouge">~/Desktop/rtbth-dkms-3.9.5</code>) where we unzipped the source run the following commands</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code>  make
-  sudo make install
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>Put the source in <code class="highlighter-rouge">/usr/src</code></p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code>  sudo cp -r ~/Desktop/rtbth-dkms-3.9.5 /usr/src/rtbth-3.9.5
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>Dynamically install kernel module</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code>  sudo dkms install rtbth/3.9.5
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>Lastly ask the kernel to load the module at boot time. Add <code class="highlighter-rouge">rtbth</code> at the end of the file and save it.</p>
-
-    <div class="highlighter-rouge"><pre class="highlight"><code>  sudo vim /etc/modules
-</code></pre>
-    </div>
-  </li>
-  <li>
-    <p>Reboot your machine.</p>
-  </li>
+  <li>Remove the existing file containing the credentials from <code class="highlighter-rouge">.gitignore</code></li>
+  <li>Replace the credentials in the file with dummy. Commit the sample file and push it to remote.</li>
+  <li>Now run <code class="highlighter-rouge">git update-index --assume-unchanged &lt;file-path&gt;</code> for the file. Add your credentials to the file and you are good to go. The further changes in our file are not tracked. Running <code class="highlighter-rouge">git update-index --no-assume-unchanged &lt;file-path&gt;</code> will bring the file back to being tracked.</li>
 </ul>
 
-<p>This got my bluetooth working. Hopefully it will get yours to work too! Time to enjoy a movie with my earphones XD.</p>
+<p>From the <a href="https://git-scm.com/docs/git-update-index#git-update-index---no-assume-unchanged">git documentation</a></p>
 
-<p>Ref: <a href="https://askubuntu.com/questions/778615/ralink-rt-3290-bluetooth-problem-on-ubuntu-16-04">askubuntu</a></p>
+<div class="highlighter-rouge"><pre class="highlight"><code>	When this flag is specified, the object names recorded for the paths are not updated. Instead, this option sets/unsets the "assume unchanged" bit for the paths. When the "assume unchanged" bit is on, the user promises not to change the file and allows Git to assume that the working tree file matches what is recorded in the index. If you want to change the working tree file, you need to unset the bit to tell Git.
+</code></pre>
+</div>
 
-<p>Credits: <a href="https://github.com/loimu">blaze</a>, <a href="https://askubuntu.com/users/703994/n-sinha">N.Sinha</a></p>
 
 
         </section>
@@ -213,15 +177,15 @@
 
             <section class="share">
                 <h4>Share this post</h4>
-                <a class="icon-twitter" href="http://twitter.com/share?text=Ralink RT 3290 bluetooth kernel module for linux&amp;url=http://archie94.github.io/blogs/ralink-rt-3290-bluetooth-kernel-module"
+                <a class="icon-twitter" href="http://twitter.com/share?text=Untrack files in Git&amp;url=http://archie94.github.io/blogs/untrack-files-in-git"
                     onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                     <span class="hidden">Twitter</span>
                 </a>
-                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://archie94.github.io/blogs/ralink-rt-3290-bluetooth-kernel-module"
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://archie94.github.io/blogs/untrack-files-in-git"
                     onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
                     <span class="hidden">Facebook</span>
                 </a>
-                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://archie94.github.io/blogs/ralink-rt-3290-bluetooth-kernel-module"
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://archie94.github.io/blogs/untrack-files-in-git"
                    onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
                     <span class="hidden">Google+</span>
                 </a>
@@ -240,20 +204,13 @@
 
     <!-- [[! next_post ]] -->
     
-        <a class="read-next-story " style="background-image: url(/blogs/assets/images/cp.jpg)" href="/blogs/cp-cookbook">
-            <section class="post">
-                <h2>CP Cookbook</h2>
-                <p>Similar to my Blog of Blogs post but more focussed on competitive coding. - [The...</p>
-            </section>
-        </a>
-    
     <!-- [[! /next_post ]] -->
     <!-- [[! prev_post ]] -->
     
-        <a class="read-next-story prev " style="background-image: url(/blogs/assets/images/travisci.jpg)" href="/blogs/setting-up-travis-ci">
+        <a class="read-next-story prev " style="background-image: url(/blogs/assets/images/cp.jpg)" href="/blogs/cp-cookbook">
             <section class="post">
-                <h2>Setting up Travis CI for the blog</h2>
-                <p>If your blog is a fork of Jasper and you host it in github then...</p>
+                <h2>CP Cookbook</h2>
+                <p>Similar to my Blog of Blogs post but more focussed on competitive coding. The Digit...</p>
             </section>
         </a>
     

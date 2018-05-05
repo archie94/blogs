@@ -8,6 +8,21 @@
     
       
       <item>
+        <title>Untrack files in Git</title>
+        
+          <description>&lt;p&gt;Adding file paths to &lt;code class=&quot;highlighter-rouge&quot;&gt;.gitignore&lt;/code&gt; in a project untracks them. Changes in those files will not be tracked and we are good to go. What if we do need a version of a file to be pushed in the repository? Say in our project we have a file &lt;code class=&quot;highlighter-rouge&quot;&gt;keys&lt;/code&gt; which contains the a pair of keys. We do not wish to push the credentials to our repo, but we would like to keep the file &lt;code class=&quot;highlighter-rouge&quot;&gt;keys&lt;/code&gt; in our repository.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Sat, 05 May 2018 00:00:00 +0000</pubDate>
+        <link>
+        http://archie94.github.io/blogs//untrack-files-in-git</link>
+        <guid isPermaLink="true">http://archie94.github.io/blogs//untrack-files-in-git</guid>
+      </item>
+      
+    
+      
+      <item>
         <title>CP Cookbook</title>
         
           <description>&lt;p&gt;Similar to my Blog of Blogs post but more focussed on competitive coding.&lt;/p&gt;
