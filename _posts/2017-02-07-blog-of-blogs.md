@@ -25,3 +25,5 @@ Here I plan to keep links of exciting blog posts which I encounter. I will go on
 6. [Installing Sudo in Arch Linux ARM](https://www.reddit.com/r/raspberry_pi/comments/4skwiq/arch_linux_arm_tutorial_part_2_installing_sudo/?st=j3ag3dpv&sh=537cfee1)
 
 7. [Introduction to strage terminology and concepts in Linux](https://www.digitalocean.com/community/tutorials/an-introduction-to-storage-terminology-and-concepts-in-linux)
+
+8. [The Archive of Interesting Code](http://keithschwarz.com)
