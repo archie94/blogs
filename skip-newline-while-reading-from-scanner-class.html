@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- [[! Page Meta ]] -->
-    <title>Untrack files in Git</title>
+    <title>Skip newline character while reading from Scanner class</title>
     <meta name="description" content="Out of Oblivion - My digital notebook." />
 
     <meta name="HandheldFriendly" content="True" />
@@ -78,7 +78,7 @@
         
         <li class="nav-devops " role="presentation"><a href="/blogs/tag/DevOps">DevOps</a></li>
 
-        <li class="nav-git  nav-current" role="presentation"><a href="/blogs/tag/git">Git</a></li>
+        <li class="nav-git " role="presentation"><a href="/blogs/tag/git">Git</a></li>
         
         <li class="nav-author " role="presentation"><a href="/blogs/author/casper">Author</a></li>
     </ul>
@@ -98,9 +98,9 @@
 <!-- Everything inside the #post tags pulls data from the post -->
 <!-- #post -->
 
-<header class="main-header post-head " style="background-image: url(/blogs/assets/images/git_1.png) ">
+<header class="main-header post-head " style="background-image: url(/blogs/assets/images/java.jpg) ">
     <nav class="main-nav  overlay  clearfix">
-        <a class="blog-logo" href="/blogs/"><img src="/blogs/assets/images/git_logo.png" alt="Blog Logo" /></a>
+        <a class="blog-logo" href="/blogs/"><img src="/blogs/assets/images/home.png" alt="Blog Logo" /></a>
         
             <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
         
@@ -112,16 +112,16 @@
     <article class="post tag-fiction">
 
         <header class="post-header">
-            <h1 class="post-title">Untrack files in Git</h1>
+            <h1 class="post-title">Skip newline character while reading from Scanner class</h1>
             <section class="post-meta">
             <!-- <a href='/blogs/'>Arka Prava Basu</a> -->
-            <time class="post-date" datetime="2018-05-05">05 May 2018</time>
+            <time class="post-date" datetime="2018-06-04">04 Jun 2018</time>
                 <!-- [[tags prefix=" on "]] -->
                  
                 on 
                 
                     
-                       <a href='/blogs/tag/git'>Git</a>
+                       <a href='/blogs/tag/development'>Development</a>
                        
                 
                 
@@ -130,22 +130,92 @@
 
         <section class="post-content">
             
-            <p>Adding file paths to <code class="highlighter-rouge">.gitignore</code> in a project untracks them. Changes in those files will not be tracked and we are good to go. What if we do need a version of a file to be pushed in the repository? Say in our project we have a file <code class="highlighter-rouge">keys</code> which contains the a pair of keys. We do not wish to push the credentials to our repo, but we would like to keep the file <code class="highlighter-rouge">keys</code> in our repository.</p>
+            <p>We have all come across reading from <code class="highlighter-rouge">stdin</code> while programming in Java and <code class="highlighter-rouge">java.util.Scanner</code> class provides easy way to parse expressions and give out primitive types. From the doc :</p>
 
-<p>Running <code class="highlighter-rouge">git rm --cached &lt;file-path&gt;</code> will remove the path from index. The subsequent push will delete the file from remote. It did not help me. So here is what I did.</p>
-
-<ul>
-  <li>Remove the existing file containing the credentials from <code class="highlighter-rouge">.gitignore</code></li>
-  <li>Replace the credentials in the file with dummy. Commit the sample file and push it to remote.</li>
-  <li>Now run <code class="highlighter-rouge">git update-index --assume-unchanged &lt;file-path&gt;</code> for the file. Add your credentials to the file and you are good to go. The further changes in our file are not tracked. Running <code class="highlighter-rouge">git update-index --no-assume-unchanged &lt;file-path&gt;</code> will bring the file back to being tracked.</li>
-</ul>
-
-<p>From the <a href="https://git-scm.com/docs/git-update-index#git-update-index---no-assume-unchanged">git documentation</a></p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>	When this flag is specified, the object names recorded for the paths are not updated. Instead, this option sets/unsets the "assume unchanged" bit for the paths. When the "assume unchanged" bit is on, the user promises not to change the file and allows Git to assume that the working tree file matches what is recorded in the index. If you want to change the working tree file, you need to unset the bit to tell Git.
+<div class="highlighter-rouge"><pre class="highlight"><code>A Scanner breaks its input into tokens using a delimiter pattern, which by default matches whitespace. The resulting tokens may then be converted into values of different types using the various next methods.
 </code></pre>
 </div>
 
+<p>So let’s look at the following code:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Scanner scanner = new Scanner(System.in);
+
+int n = scanner.nextInt();
+
+while(n-- &gt; 0) {
+    String s = scanner.nextLine();
+    System.out.println(s);
+}
+</code></pre>
+</div>
+
+<p>Clearly this piece of code spits out the words we type in. The first input should be a <code class="highlighter-rouge">Integer</code> denoting number of lines to take as user input. So for the input</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>3
+asdf qwerty
+Hello World
+Hello java
+</code></pre>
+</div>
+
+<p>we have the output</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>asdf qwerty
+Hello World
+</code></pre>
+</div>
+
+<p>Why is that? Experienced folks are quick to catch that the <code class="highlighter-rouge">scanner.nextInt()</code> does not consume the newline character. Workaround? Easy forcibly consume the newline character after the <code class="highlighter-rouge">scanner.nextInt()</code> read. Something like</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Scanner scanner = new Scanner(System.in);
+
+int n = scanner.nextInt();
+scanner.nextLine();
+
+while(n-- &gt; 0) {
+    String s = scanner.nextLine();
+    System.out.println(s);
+}
+</code></pre>
+</div>
+
+<p>And we get what we want. Another workaround: read the whole line and then parse it as an integer. Something like</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>try {
+    n = Integer.parseInt(scanner.nextLine());
+} catch (NumberFormatException e) {
+    e.printStackTrace();
+}
+</code></pre>
+</div>
+
+<p>Works!</p>
+
+<p>But recently I came across the <code class="highlighter-rouge">skip()</code> method available in the <code class="highlighter-rouge">Scanner</code> class. It works by taking in a pattern/regex and will skip the input that matches the said pattern. So lets do this</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Scanner scanner = new Scanner(System.in);
+
+int n = scanner.nextInt();
+scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+while(n-- &gt; 0) {
+    String s = scanner.nextLine();
+    System.out.println(s);
+}
+</code></pre>
+</div>
+
+<p>Whoa! Works but what did I just do? Well we are just telling scanner to skip any newline character after the interger read. Well why the whole <code class="highlighter-rouge">"(\r\n|[\n\r\u2028\u2029\u0085])?"</code>? Interestingly line break control character is different for different OS! Linux has <code class="highlighter-rouge">\n</code> escape sequence, Mac has <code class="highlighter-rouge">\r</code> while windows keeps <code class="highlighter-rouge">\r\n</code>. The stated pattern asks the <code class="highlighter-rouge">Scanner</code> class to remove them. Additionally</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>\u2028 is Unicode character LINE SEPARATOR
+\u2029 is Unicode character PARAGRAPH SEPARATOR
+\u0085 is Unicode character NEXT LINE (NEL)
+</code></pre>
+</div>
+
+<p>This piece of code looked elegant to me; we are skipping the newline knowing what we can except although agreed maybe the previous method are more memorable. A big thanks to <a href="https://www.hackerrank.com/dashboard">Hackerrank</a>; found this piece of code in their prefilled code for <a href="https://www.hackerrank.com/challenges/string-construction/problem">String Construction</a> problem.</p>
+
+<p>Cheers!</p>
 
 
         </section>
@@ -177,15 +247,15 @@
 
             <section class="share">
                 <h4>Share this post</h4>
-                <a class="icon-twitter" href="http://twitter.com/share?text=Untrack files in Git&amp;url=http://archie94.github.io/blogs/untrack-files-in-git"
+                <a class="icon-twitter" href="http://twitter.com/share?text=Skip newline character while reading from Scanner class&amp;url=http://archie94.github.io/blogs/skip-newline-while-reading-from-scanner-class"
                     onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                     <span class="hidden">Twitter</span>
                 </a>
-                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://archie94.github.io/blogs/untrack-files-in-git"
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://archie94.github.io/blogs/skip-newline-while-reading-from-scanner-class"
                     onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
                     <span class="hidden">Facebook</span>
                 </a>
-                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://archie94.github.io/blogs/untrack-files-in-git"
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://archie94.github.io/blogs/skip-newline-while-reading-from-scanner-class"
                    onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
                     <span class="hidden">Google+</span>
                 </a>
@@ -204,20 +274,13 @@
 
     <!-- [[! next_post ]] -->
     
-        <a class="read-next-story " style="background-image: url(/blogs/assets/images/java.jpg)" href="/blogs/skip-newline-while-reading-from-scanner-class">
-            <section class="post">
-                <h2>Skip newline character while reading from Scanner class</h2>
-                <p>We have all come across reading from `stdin` while programming in Java and `java.util.Scanner` class...</p>
-            </section>
-        </a>
-    
     <!-- [[! /next_post ]] -->
     <!-- [[! prev_post ]] -->
     
-        <a class="read-next-story prev " style="background-image: url(/blogs/assets/images/cp.jpg)" href="/blogs/cp-cookbook">
+        <a class="read-next-story prev " style="background-image: url(/blogs/assets/images/git_1.png)" href="/blogs/untrack-files-in-git">
             <section class="post">
-                <h2>CP Cookbook</h2>
-                <p>Similar to my Blog of Blogs post but more focussed on competitive coding. The Digit...</p>
+                <h2>Untrack files in Git</h2>
+                <p>Adding file paths to .gitignore in a project untracks them. Changes in those files will...</p>
             </section>
         </a>
     

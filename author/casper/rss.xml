@@ -12,6 +12,103 @@
    <atom:link href="rss" rel="self" type="application/rss+xml" />
    
 	<item>
+	  <title>Skip newline character while reading from Scanner class</title>
+	  <link>/blogs//skip-newline-while-reading-from-scanner-class</link>
+	  <author>Arka Prava Basu</author>
+	  <pubDate>2018-06-04T00:00:00+00:00</pubDate>
+	  <guid>/blogs//skip-newline-while-reading-from-scanner-class</guid>
+	  <description><![CDATA[
+	     <p>We have all come across reading from <code class="highlighter-rouge">stdin</code> while programming in Java and <code class="highlighter-rouge">java.util.Scanner</code> class provides easy way to parse expressions and give out primitive types. From the doc :</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>A Scanner breaks its input into tokens using a delimiter pattern, which by default matches whitespace. The resulting tokens may then be converted into values of different types using the various next methods.
+</code></pre>
+</div>
+
+<p>So let’s look at the following code:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Scanner scanner = new Scanner(System.in);
+
+int n = scanner.nextInt();
+
+while(n-- &gt; 0) {
+    String s = scanner.nextLine();
+    System.out.println(s);
+}
+</code></pre>
+</div>
+
+<p>Clearly this piece of code spits out the words we type in. The first input should be a <code class="highlighter-rouge">Integer</code> denoting number of lines to take as user input. So for the input</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>3
+asdf qwerty
+Hello World
+Hello java
+</code></pre>
+</div>
+
+<p>we have the output</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>asdf qwerty
+Hello World
+</code></pre>
+</div>
+
+<p>Why is that? Experienced folks are quick to catch that the <code class="highlighter-rouge">scanner.nextInt()</code> does not consume the newline character. Workaround? Easy forcibly consume the newline character after the <code class="highlighter-rouge">scanner.nextInt()</code> read. Something like</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Scanner scanner = new Scanner(System.in);
+
+int n = scanner.nextInt();
+scanner.nextLine();
+
+while(n-- &gt; 0) {
+    String s = scanner.nextLine();
+    System.out.println(s);
+}
+</code></pre>
+</div>
+
+<p>And we get what we want. Another workaround: read the whole line and then parse it as an integer. Something like</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>try {
+    n = Integer.parseInt(scanner.nextLine());
+} catch (NumberFormatException e) {
+    e.printStackTrace();
+}
+</code></pre>
+</div>
+
+<p>Works!</p>
+
+<p>But recently I came across the <code class="highlighter-rouge">skip()</code> method available in the <code class="highlighter-rouge">Scanner</code> class. It works by taking in a pattern/regex and will skip the input that matches the said pattern. So lets do this</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Scanner scanner = new Scanner(System.in);
+
+int n = scanner.nextInt();
+scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+while(n-- &gt; 0) {
+    String s = scanner.nextLine();
+    System.out.println(s);
+}
+</code></pre>
+</div>
+
+<p>Whoa! Works but what did I just do? Well we are just telling scanner to skip any newline character after the interger read. Well why the whole <code class="highlighter-rouge">"(\r\n|[\n\r\u2028\u2029\u0085])?"</code>? Interestingly line break control character is different for different OS! Linux has <code class="highlighter-rouge">\n</code> escape sequence, Mac has <code class="highlighter-rouge">\r</code> while windows keeps <code class="highlighter-rouge">\r\n</code>. The stated pattern asks the <code class="highlighter-rouge">Scanner</code> class to remove them. Additionally</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>\u2028 is Unicode character LINE SEPARATOR
+\u2029 is Unicode character PARAGRAPH SEPARATOR
+\u0085 is Unicode character NEXT LINE (NEL)
+</code></pre>
+</div>
+
+<p>This piece of code looked elegant to me; we are skipping the newline knowing what we can except although agreed maybe the previous method are more memorable. A big thanks to <a href="https://www.hackerrank.com/dashboard">Hackerrank</a>; found this piece of code in their prefilled code for <a href="https://www.hackerrank.com/challenges/string-construction/problem">String Construction</a> problem.</p>
+
+<p>Cheers!</p>
+
+	  ]]></description>
+	</item>
+
+	<item>
 	  <title>Untrack files in Git</title>
 	  <link>/blogs//untrack-files-in-git</link>
 	  <author>Arka Prava Basu</author>
