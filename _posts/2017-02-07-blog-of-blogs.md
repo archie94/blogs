@@ -27,3 +27,5 @@ Here I plan to keep links of exciting blog posts which I encounter. I will go on
 7. [Introduction to strage terminology and concepts in Linux](https://www.digitalocean.com/community/tutorials/an-introduction-to-storage-terminology-and-concepts-in-linux)
 
 8. [The Archive of Interesting Code](http://keithschwarz.com)
+
+9. [JVM Internals](http://blog.jamesdbloom.com/JVMInternals.html)
