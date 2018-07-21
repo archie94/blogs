@@ -29,3 +29,5 @@ Here I plan to keep links of exciting blog posts which I encounter. I will go on
 8. [The Archive of Interesting Code](http://keithschwarz.com)
 
 9. [JVM Internals](http://blog.jamesdbloom.com/JVMInternals.html)
+
+10. [Unicode and character sets](https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/)
